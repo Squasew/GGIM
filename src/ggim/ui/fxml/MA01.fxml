@@ -40,27 +40,32 @@
    <center>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="183.0" prefWidth="601.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton mnemonicParsing="false" text="Gestionar altas y bajas de usuarios">
+            <RadioButton fx:id="gestUsuarios" mnemonicParsing="false" text="Gestionar altas y bajas de usuarios">
                <font>
                   <Font size="13.0" />
                </font>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Gestionar modificaciones de tarifas">
+            <RadioButton fx:id="gestTarifas" mnemonicParsing="false" text="Gestionar modificaciones de tarifas">
                <font>
                   <Font size="13.0" />
                </font>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Gestionar modificaciones de contratos">
+            <RadioButton fx:id="gestContratos" mnemonicParsing="false" text="Gestionar modificaciones de contratos">
                <font>
                   <Font size="13.0" />
                </font>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Gestionar reportes de maquinas">
+            <RadioButton fx:id="gestIncidencias" mnemonicParsing="false" text="Gestionar reportes de maquinas">
                <font>
                   <Font size="13.0" />
                </font>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Ver entrenamientos de un usuario">
+            <RadioButton fx:id="gestMaquinas" mnemonicParsing="false" text="Gestionar maquinas">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="verEntrenamientos" mnemonicParsing="false" text="Ver entrenamientos de un usuario">
                <font>
                   <Font size="13.0" />
                </font>
@@ -75,7 +80,7 @@
       <VBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefHeight="0.0" prefWidth="600.0" />
-            <Button mnemonicParsing="false" text="Seleccionar" />
+            <Button fx:id="btnSeleccionar" mnemonicParsing="false" text="Seleccionar" />
          </children>
          <opaqueInsets>
             <Insets />

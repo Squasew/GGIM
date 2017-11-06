@@ -22,17 +22,14 @@ public class GGIM extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-    
-        EU01TextGenInterface eu01tg = 
-                new EU01TextGen();
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ggim/ui/fxml/EU01.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA01.fxml"));
         
         Parent root =
                 (Parent) loader.load();
-        EU01Controller mu01 =
-                ((EU01Controller)loader.getController());
-        mu01.setStage(primaryStage,eu01tg);
+        MA01Controller mu01 =
+                ((MA01Controller)loader.getController());
+        mu01.setStage(primaryStage);
         mu01.initStage(root);
         
     }
