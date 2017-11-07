@@ -80,7 +80,7 @@
       <VBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefHeight="0.0" prefWidth="600.0" />
-            <Button fx:id="btnSeleccionar" mnemonicParsing="false" text="Seleccionar" />
+            <Button fx:id="btnSeleccionar" onAction="#handleSeleccion" mnemonicParsing="false" text="Seleccionar" />
          </children>
          <opaqueInsets>
             <Insets />

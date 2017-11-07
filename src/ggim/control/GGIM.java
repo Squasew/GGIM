@@ -23,14 +23,14 @@ public class GGIM extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA01.fxml"));
-        
+        FXMLLoader loader = 
+                new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM01.fxml"));
         Parent root =
                 (Parent) loader.load();
-        MA01Controller mu01 =
+        MA01Controller ma01 =
                 ((MA01Controller)loader.getController());
-        mu01.setStage(primaryStage);
-        mu01.initStage(root);
+        ma01.setStage(primaryStage);
+        ma01.initStage(root);
         
     }
   
