@@ -100,8 +100,17 @@ public class MA01Controller {
             
         } else if (botonesAdmin.getSelectedToggle().equals(gestMaquinas)) {
             
-            
-            
+            FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/EU01.fxml"));
+            GM01TextGenInterface gm01TG =
+                    new GM01TextGen();
+            Parent root =
+                    (Parent) loader.load();
+            GM01Controller gm01 =
+                    ((GM01Controller)loader.getController());
+            gm01.setStage(stage,gm01TG);
+            gm01.initStage(root);
+              
         } else if (botonesAdmin.getSelectedToggle().equals(verEntrenamientos)) {
             
             FXMLLoader loader = 

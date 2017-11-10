@@ -6,6 +6,7 @@
 package ggim.ui.controllers;
 
 import ggim.model.EntrenamientoBean;
+import ggim.model.MaquinaBean;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,17 +16,17 @@ import java.util.Collection;
  */
 public class GM01TextGen implements GM01TextGenInterface{
 
-    private ArrayList <EntrenamientoBean> entrenamientos;
+    private ArrayList <MaquinaBean> maquinas;
     
     public GM01TextGen(){
-        entrenamientos = new ArrayList();
-            for (int i = 0; i < 15; i++)
-                entrenamientos.add(new EntrenamientoBean("nombre"+i,"entrenador","03/11/2017",i));
+        maquinas = new ArrayList();
+            for (int i = 1; i <= 15; i++)
+                maquinas.add(new MaquinaBean(i, "maquina"+i, i+"/11/2018","Activa"));
     }
     
     @Override
     public Collection getAllMaquinas() {
-        return entrenamientos;
+        return maquinas;
     }
     
 }

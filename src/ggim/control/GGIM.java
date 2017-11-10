@@ -8,6 +8,9 @@ package ggim.control;
 import ggim.ui.controllers.EU01Controller;
 import ggim.ui.controllers.EU01TextGen;
 import ggim.ui.controllers.EU01TextGenInterface;
+import ggim.ui.controllers.GM01Controller;
+import ggim.ui.controllers.GM01TextGen;
+import ggim.ui.controllers.GM01TextGenInterface;
 import ggim.ui.controllers.MA01Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,13 +27,15 @@ public class GGIM extends Application{
     public void start(Stage primaryStage) throws Exception {
         
         FXMLLoader loader = 
-                new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM01.fxml"));
-        Parent root =
-                (Parent) loader.load();
-        MA01Controller ma01 =
-                ((MA01Controller)loader.getController());
-        ma01.setStage(primaryStage);
-        ma01.initStage(root);
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM01.fxml"));
+            GM01TextGenInterface gm01TG =
+                    new GM01TextGen();
+            Parent root =
+                    (Parent) loader.load();
+            GM01Controller gm01 =
+                    ((GM01Controller)loader.getController());
+            gm01.setStage(primaryStage,gm01TG);
+            gm01.initStage(root);
         
     }
   

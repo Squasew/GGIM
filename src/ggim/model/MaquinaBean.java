@@ -50,7 +50,7 @@ public class MaquinaBean {
     }
     
     public String getRevision () {
-        return this.maquina.get();
+        return this.revision.get();
     }
     
     public void setEstado (String estado) {
