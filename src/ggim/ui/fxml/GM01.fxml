@@ -119,7 +119,7 @@
                   <Insets right="40.0" />
                </padding>
                <children>
-                  <Button fx:id="eliminar" mnemonicParsing="false" text="Eliminar" />
+                  <Button fx:id="eliminar" onAction="#bttnEliminarHandler" mnemonicParsing="false" text="Eliminar" />
                   <Button fx:id="modificar" mnemonicParsing="false" text="Modificar" />
                   <Button fx:id="añadir" mnemonicParsing="false" text="Añadir" />
                </children>

@@ -5,6 +5,7 @@
  */
 package ggim.ui.controllers;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,11 +50,11 @@ public class GM01Controller {
     @FXML
             private TextField idText;
     @FXML
-            private ComboBox maquinaCombo;
+            private ComboBox <String> maquinaCombo;
     @FXML
             private DatePicker fechaPicker;
     @FXML
-            private ComboBox estadoCombo;
+            private ComboBox <String> estadoCombo;
     
     //Definimos los elementos de la tabla
     
@@ -123,15 +124,128 @@ public class GM01Controller {
                 .selectedItemProperty()
                 .addListener(this::handleCambioSeleccionMaquina);
         
+        //Definimos los datos de los combos maquina y estado
+            //Primero definimos los del combo maquina
+            
+        ObservableList modelosList =
+                FXCollections.observableArrayList(gm01.getAllModelos());
+        
+        maquinaCombo.setItems(modelosList);
+        maquinaCombo.getSelectionModel().selectFirst();
+        
+            //Ahora definimos los del combo estado
+            
+        ArrayList <String> estados = new ArrayList();
+            estados.add("Sin estado");
+            estados.add("Usable");
+            estados.add("Fuera de uso");
+        
+        ObservableList estadosList =
+                FXCollections.observableArrayList(estados);
+        
+        estadoCombo.setItems(estadosList);
+        estadoCombo.getSelectionModel().selectFirst();
+        
+        //Definimos listeners para cambios en los campos de busqueda avanzada
+        
+        idText.textProperty().addListener(this::idTextListener);
+        fechaPicker.getEditor().textProperty().addListener(this::fechaChangeListener);
+        maquinaCombo.valueProperty().addListener(this::maquinaChangeListener);
+        
     }
     
     public void handleCambioSeleccionMaquina (ObservableValue observable,
-            Object oldValue, Object newValue){
-    
+            Object oldValue, Object newValue) {
         
+        eliminar.setDisable(false);
+        modificar.setDisable(false);
         
-}
+    }
     
-
+    public void maquinaChangeListener (ObservableValue observable,
+            String oldValue, String newValue){
+    
+        if (!newValue.trim().equals("Sin modelo")){
+            
+            idText.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else if (newValue.trim().equals("Sin modelo")
+                    && fechaPicker.getValue().toString().trim().equals("")
+                    && estadoCombo.getValue().equals("Sin estado")) {
+            
+            idText.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
+    }
+    
+    public void estadoChangeListener (ObservableValue observable,
+            String oldValue, String newValue){
+    
+        if (!newValue.trim().equals("Sin estado")){
+            
+            idText.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else if (newValue.trim().equals("Sin estado")
+                    && fechaPicker.getValue().toString().trim().equals("")
+                    && maquinaCombo.getValue().equals("Sin modelo")) {
+            
+            idText.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
+    }
+    
+    public void bttnEliminarHandler () {
+    
+        tabla.getItems().remove(tabla.getSelectionModel().getSelectedItem());
+        
+        tabla.refresh();
+        
+    }
+    
+    public void idTextListener (ObservableValue observable,
+            String oldValue, String newValue) {
+        
+        if (!newValue.trim().equals("")){
+            
+            maquinaCombo.setDisable(true);
+            fechaPicker.setDisable(true);
+            estadoCombo.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else {
+            
+            maquinaCombo.setDisable(false);
+            fechaPicker.setDisable(false);
+            estadoCombo.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
+    }
+    
+    public void fechaChangeListener (ObservableValue observable,
+            String oldValue, String newValue) {
+        
+        if (!newValue.trim().equals("")){
+            
+            idText.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else if (newValue.trim().equals("")
+                    && maquinaCombo.getValue().equals("Sin modelo")
+                    && estadoCombo.getValue().equals("Sin estado")) {
+            
+            idText.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
+    }
     
 }

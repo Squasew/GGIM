@@ -13,4 +13,5 @@ import java.util.Collection;
  */
 public interface GM01TextGenInterface {
     public Collection getAllMaquinas();
+    public Collection getAllModelos();
 }
