@@ -8,6 +8,9 @@ package ggim.ui.controllers;
 import ggim.model.MaquinaBean;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -37,5 +40,22 @@ public class GM01TextGen implements GM01TextGenInterface{
     public Collection getAllModelos() {
         return modelos;
     }
+
+    @Override
+    public ObservableList<MaquinaBean> filterID(ObservableList<MaquinaBean> maquinasFilter, String value) {
+        
+        int id = Integer.parseInt(value);
+        
+        Collection <MaquinaBean> maquinaFiltered =
+                maquinasFilter.stream().filter(maquina -> maquina.getID() == id).collect(Collectors.toList());
+        
+        ObservableList <MaquinaBean> maquinasFilteredFinished =
+                FXCollections.observableArrayList(maquinaFiltered);
+        
+        return maquinasFilteredFinished;
+        
+    }
+
+    
     
 }

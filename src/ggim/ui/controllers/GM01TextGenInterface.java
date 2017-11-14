@@ -5,13 +5,21 @@
  */
 package ggim.ui.controllers;
 
+import ggim.model.MaquinaBean;
 import java.util.Collection;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author ubuntu
  */
 public interface GM01TextGenInterface {
+    
     public Collection getAllMaquinas();
+    
     public Collection getAllModelos();
+
+    public ObservableList<MaquinaBean> filterID(ObservableList<MaquinaBean> maquinasFilter, String value);
+
+    
 }

@@ -5,7 +5,9 @@
  */
 package ggim.ui.controllers;
 
+import ggim.model.MaquinaBean;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -73,6 +75,8 @@ public class GM01Controller {
     private Stage stage;
     private GM01TextGenInterface gm01;
     
+    ObservableList maquinasList;
+    
     public void setStage(Stage primaryStage,GM01TextGenInterface gm01) {
         this.stage = primaryStage;
         this.gm01 = gm01;
@@ -111,7 +115,7 @@ public class GM01Controller {
         
         //Generamos los datos mediante el metodo .getAllMaquinas
         
-        ObservableList maquinasList =
+        maquinasList =
                 FXCollections.observableArrayList(gm01.getAllMaquinas());
         
         //Asignamos los datos creados a la tabla
@@ -151,6 +155,39 @@ public class GM01Controller {
         idText.textProperty().addListener(this::idTextListener);
         fechaPicker.getEditor().textProperty().addListener(this::fechaChangeListener);
         maquinaCombo.valueProperty().addListener(this::maquinaChangeListener);
+        estadoCombo.valueProperty().addListener(this::estadoChangeListener);
+        
+    }
+    
+    public void handleBotonLimpiar () {
+        
+        idText.setText("");
+        fechaPicker.getEditor().setText("");
+        maquinaCombo.getSelectionModel().selectFirst();
+        estadoCombo.getSelectionModel().selectFirst();
+        
+        limpiar.setDisable(true);
+        
+    }
+    
+    public void handleBotonFiltrar () {
+        
+        ObservableList <MaquinaBean> maquinasFilter =
+                FXCollections.observableArrayList(gm01.getAllMaquinas());
+        
+        if (idText.textProperty().getValue().trim().equals("")) {
+            
+            
+            
+        } else {
+            
+            maquinasFilter = gm01.filterID(maquinasFilter,idText.textProperty().getValue());
+            tabla.setItems(maquinasFilter);
+            tabla.refresh();
+            
+        }
+        
+        limpiar.setDisable(false);
         
     }
     
@@ -165,17 +202,21 @@ public class GM01Controller {
     public void maquinaChangeListener (ObservableValue observable,
             String oldValue, String newValue){
     
-        if (!newValue.trim().equals("Sin modelo")){
+        if (!newValue.equals("Sin modelo")){
             
             idText.setDisable(true);
             filtrar.setDisable(false);
             
-        } else if (newValue.trim().equals("Sin modelo")
-                    && fechaPicker.getValue().toString().trim().equals("")
-                    && estadoCombo.getValue().equals("Sin estado")) {
+        } else if (newValue.equals("Sin modelo")) {
             
-            idText.setDisable(false);
-            filtrar.setDisable(true);
+            
+            if (fechaPicker.getEditor().getText().trim().equals("")
+                && estadoCombo.getSelectionModel().getSelectedItem().equals("Sin estado")) {
+              
+                idText.setDisable(false);
+                filtrar.setDisable(true);
+                
+            }
             
         }
         
@@ -184,17 +225,20 @@ public class GM01Controller {
     public void estadoChangeListener (ObservableValue observable,
             String oldValue, String newValue){
     
-        if (!newValue.trim().equals("Sin estado")){
+        if (!newValue.equals("Sin estado")){
             
             idText.setDisable(true);
             filtrar.setDisable(false);
             
-        } else if (newValue.trim().equals("Sin estado")
-                    && fechaPicker.getValue().toString().trim().equals("")
-                    && maquinaCombo.getValue().equals("Sin modelo")) {
+        } else if (newValue.equals("Sin estado")) {
             
-            idText.setDisable(false);
-            filtrar.setDisable(true);
+            if (fechaPicker.getEditor().getText().trim().equals("")
+                && maquinaCombo.getSelectionModel().getSelectedItem().equals("Sin modelo")) {
+              
+                idText.setDisable(false);
+                filtrar.setDisable(true);
+                
+            }
             
         }
         

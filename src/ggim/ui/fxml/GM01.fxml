@@ -83,8 +83,8 @@
                   <Insets left="40.0" right="40.0" />
                </padding>
                <children>
-                  <Button fx:id="limpiar" mnemonicParsing="false" text="Limpiar" />
-                  <Button fx:id="filtrar" mnemonicParsing="false" text="Filtrar" />
+                  <Button fx:id="limpiar" onAction="#handleBotonLimpiar" mnemonicParsing="false" text="Limpiar" />
+                  <Button fx:id="filtrar" onAction="#handleBotonFiltrar" mnemonicParsing="false" text="Filtrar" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="200.0">
