@@ -47,7 +47,7 @@ public class GM01Controller {
     @FXML
             private Button añadir;
     
-        //Ahora definimos el resto de los campos
+    //Ahora definimos el resto de los campos
     
     @FXML
             private TextField idText;
@@ -70,6 +70,8 @@ public class GM01Controller {
             private TableColumn tbColRev;
     @FXML
             private TableColumn tbColEst;
+    
+    //Definimos las variables extra que necesitaremos
     
     Logger logger;
     private Stage stage;
@@ -161,10 +163,12 @@ public class GM01Controller {
     
     public void handleBotonLimpiar () {
         
-        idText.setText("");
+        idText.textProperty().setValue("");
         fechaPicker.getEditor().setText("");
         maquinaCombo.getSelectionModel().selectFirst();
         estadoCombo.getSelectionModel().selectFirst();
+        
+        tabla.setItems(maquinasList);
         
         limpiar.setDisable(true);
         
@@ -172,12 +176,30 @@ public class GM01Controller {
     
     public void handleBotonFiltrar () {
         
-        ObservableList <MaquinaBean> maquinasFilter =
-                FXCollections.observableArrayList(gm01.getAllMaquinas());
+        ObservableList <MaquinaBean> maquinasFilter = maquinasList;
         
         if (idText.textProperty().getValue().trim().equals("")) {
             
+            if (!maquinaCombo.getSelectionModel().getSelectedItem().equals("Sin modelo")) {
+                
+                maquinasFilter = gm01.filterModelo(maquinasFilter,maquinaCombo.getSelectionModel().getSelectedItem());
+                
+            }
             
+            if (!fechaPicker.getEditor().getText().trim().equals("")) {
+                
+                maquinasFilter = gm01.filterFecha(maquinasFilter,fechaPicker.getEditor().getText().trim());
+                
+            }
+            
+            if (!estadoCombo.getSelectionModel().getSelectedItem().equals("Sin estado")) {
+                
+                maquinasFilter = gm01.filterEstado(maquinasFilter,estadoCombo.getSelectionModel().getSelectedItem());
+                
+            }
+
+            tabla.setItems(maquinasFilter);
+            tabla.refresh();
             
         } else {
             

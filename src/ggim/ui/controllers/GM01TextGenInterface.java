@@ -21,5 +21,10 @@ public interface GM01TextGenInterface {
 
     public ObservableList<MaquinaBean> filterID(ObservableList<MaquinaBean> maquinasFilter, String value);
 
+    public ObservableList<MaquinaBean> filterEstado(ObservableList<MaquinaBean> maquinasFilter, String selectedItem);
+
+    public ObservableList<MaquinaBean> filterFecha(ObservableList<MaquinaBean> maquinasFilter, String trim);
+
+    public ObservableList<MaquinaBean> filterModelo(ObservableList<MaquinaBean> maquinasFilter, String selectedItem);
     
 }
