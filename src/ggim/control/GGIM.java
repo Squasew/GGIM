@@ -5,13 +5,9 @@
  */
 package ggim.control;
 
-import ggim.ui.controllers.EU01Controller;
-import ggim.ui.controllers.EU01TextGen;
-import ggim.ui.controllers.EU01TextGenInterface;
 import ggim.ui.controllers.GM01Controller;
 import ggim.ui.controllers.GM01TextGen;
 import ggim.ui.controllers.GM01TextGenInterface;
-import ggim.ui.controllers.MA01Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -6,6 +6,8 @@
 package ggim.ui.controllers;
 
 import ggim.model.MaquinaBean;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -24,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -158,6 +161,33 @@ public class GM01Controller {
         fechaPicker.getEditor().textProperty().addListener(this::fechaChangeListener);
         maquinaCombo.valueProperty().addListener(this::maquinaChangeListener);
         estadoCombo.valueProperty().addListener(this::estadoChangeListener);
+        
+        fechaPicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd/MM/yyyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                fechaPicker.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
         
     }
     

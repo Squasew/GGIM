@@ -17,15 +17,18 @@ public class MaquinaBean {
     private final SimpleIntegerProperty iD;
     private final SimpleStringProperty maquina;
     private final SimpleStringProperty revision;
+    private final SimpleStringProperty prevision;
     private final SimpleStringProperty estado;
     
     public MaquinaBean(int id,
                         String maquina,
                         String revision,
+                        String prevision,
                         String estado) {
         this.iD         = new SimpleIntegerProperty(id);
         this.maquina    = new SimpleStringProperty(maquina);
         this.revision   = new SimpleStringProperty(revision);
+        this.prevision   = new SimpleStringProperty(prevision);
         this.estado     = new SimpleStringProperty(estado);
     }
     
