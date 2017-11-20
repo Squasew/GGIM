@@ -62,7 +62,7 @@ public class GM02Controller {
     @FXML
             private TableColumn tbColEst;
     
-    private Logger logger;
+    private static final Logger LOGGER = Logger.getLogger( GI01Controller.class.getName() );
     private Stage stage;
     private GM01TextGenInterface gm01;
     private MaquinaBean mb;

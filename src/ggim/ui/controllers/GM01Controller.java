@@ -21,6 +21,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -77,7 +79,7 @@ public class GM01Controller {
     
     //Definimos las variables extra que necesitaremos
     
-    private Logger logger;
+    private static final Logger LOGGER = Logger.getLogger( GI01Controller.class.getName() );
     private Stage stage;
     private GM01TextGenInterface gm01;
     
@@ -104,7 +106,7 @@ public class GM01Controller {
     }
     
     public void handleWindowShowing () {
-    
+        
         //Definimos el estado de los elemtentos de la ventana
         
         limpiar.setDisable(true);
@@ -368,6 +370,17 @@ public class GM01Controller {
             filtrar.setDisable(true);
             
         }
+        
+    }
+    
+    public void bttnVolver () throws IOException {
+        
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
+            Parent root= (Parent) loader.load();
+            MACcontroller controller= (MACcontroller)loader.getController();
+            controller.setManager(null,gm01);
+            controller.setStage(stage);
+            controller.initStage(root);
         
     }
     
