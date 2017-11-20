@@ -6,15 +6,16 @@
 package ggim.ui.controllers;
 
 import ggim.model.MaquinaBean;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -50,7 +51,7 @@ public class GM01Controller {
     @FXML
             private Button añadir;
     
-    //Ahora definimos el resto de los campos
+        //Ahora definimos el resto de los campos
     
     @FXML
             private TextField idText;
@@ -61,7 +62,7 @@ public class GM01Controller {
     @FXML
             private ComboBox <String> estadoCombo;
     
-    //Definimos los elementos de la tabla
+        //Definimos los elementos de la tabla
     
     @FXML
             private TableView tabla;
@@ -76,7 +77,7 @@ public class GM01Controller {
     
     //Definimos las variables extra que necesitaremos
     
-    Logger logger;
+    private Logger logger;
     private Stage stage;
     private GM01TextGenInterface gm01;
     
@@ -96,13 +97,13 @@ public class GM01Controller {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setOnShowing(this::handleWindowShowing);
+        handleWindowShowing();
         this.stage.setTitle("Gestión de máquinas");
         stage.show();    
         
     }
     
-    public void handleWindowShowing (WindowEvent e) {
+    public void handleWindowShowing () {
     
         //Definimos el estado de los elemtentos de la ventana
         
@@ -188,6 +189,32 @@ public class GM01Controller {
                 }
             }
         });
+        
+    }
+    
+    public void bttnModificarHandler () throws IOException {
+        
+        FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
+            Parent root =
+                    (Parent) loader.load();
+            GM02Controller gm02 =
+                    ((GM02Controller)loader.getController());
+            gm02.setStage(stage, gm01, (MaquinaBean)tabla.getSelectionModel().getSelectedItem(),"Modificar");
+            gm02.initStage(root);
+        
+    }
+    
+    public void bttnAñadirHandler () throws IOException {
+        
+            FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
+            Parent root =
+                    (Parent) loader.load();
+            GM02Controller gm02 =
+                    ((GM02Controller)loader.getController());
+            gm02.setStage(stage, gm01, null,"Añadir");
+            gm02.initStage(root);
         
     }
     

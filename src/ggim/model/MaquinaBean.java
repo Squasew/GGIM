@@ -56,6 +56,14 @@ public class MaquinaBean {
         return this.revision.get();
     }
     
+    public void setPrevision (String prevision) {
+        this.revision.set(prevision);
+    }
+    
+    public String getPrevision () {
+        return this.prevision.get();
+    }
+    
     public void setEstado (String estado) {
         this.estado.set(estado);
     }

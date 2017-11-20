@@ -34,7 +34,7 @@ public class ModeloBean {
         this.modoEmp.set(modoEmp);
     }
     
-    public String getMaquina () {
+    public String getModoEmp () {
         return this.modoEmp.get();
     }
     

@@ -18,6 +18,8 @@ public interface GM01TextGenInterface {
     public Collection getAllMaquinas();
     
     public Collection getAllModelos();
+    
+     public Collection getAllModelos2();
 
     public ObservableList<MaquinaBean> filterID(ObservableList<MaquinaBean> maquinasFilter, String value);
 
@@ -26,5 +28,17 @@ public interface GM01TextGenInterface {
     public ObservableList<MaquinaBean> filterFecha(ObservableList<MaquinaBean> maquinasFilter, String trim);
 
     public ObservableList<MaquinaBean> filterModelo(ObservableList<MaquinaBean> maquinasFilter, String selectedItem);
+
+    public ObservableList getCertain(MaquinaBean mb);
+
+    public MaquinaBean makeNew(MaquinaBean mb);
+
+    public void modificarMaquina(MaquinaBean mb);
+
+    public int getIndex(MaquinaBean mb);
+
+    public String getModeloName(String maquina);
+
+    public String getModeloText(String maquina);
     
 }

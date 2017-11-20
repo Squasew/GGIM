@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ggim.ui.controllers.GM02Controller">
    <top>
-      <VBox prefHeight="105.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="125.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: darkorange;">
                <padding>
@@ -27,21 +27,21 @@
                         <Insets left="10.0" />
                      </padding>
                   </Separator>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" text="---" textAlignment="CENTER" />
+                  <Button onAction="#bttnVolverHandler" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" text="---" textAlignment="CENTER" />
                   <Separator prefHeight="4.0" prefWidth="37.0" />
                   <Label prefHeight="17.0" prefWidth="123.0" text="Gestion de maquina" />
                   <Separator prefHeight="1.0" prefWidth="336.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <TableView maxHeight="-Infinity" prefHeight="50.0" prefWidth="550.0">
+                  <TableView fx:id="tabla" maxHeight="-Infinity" prefHeight="60.0" prefWidth="550.0">
                      <columns>
-                        <TableColumn prefWidth="100.0" text="ID" />
-                        <TableColumn prefWidth="100.0" text="Modelo" />
-                        <TableColumn prefWidth="100.0" text="Estado" />
-                        <TableColumn prefWidth="125.0" text="Ultima revision" />
-                        <TableColumn prefWidth="125.0" text="Proxima revision" />
+                        <TableColumn fx:id="tbColID" prefWidth="100.0" text="ID" />
+                        <TableColumn fx:id="tbColMod" prefWidth="100.0" text="Modelo" />
+                        <TableColumn fx:id="tbColEst" prefWidth="100.0" text="Estado" />
+                        <TableColumn fx:id="tbColRev" prefWidth="125.0" text="Ultima revision" />
+                        <TableColumn fx:id="tbColPrev" prefWidth="125.0" text="Proxima revision" />
                      </columns>
                   </TableView>
                </children>
@@ -61,20 +61,20 @@
       </VBox>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="170.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="290.0" prefWidth="200.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="300.0">
+                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="280.0" prefWidth="300.0">
                      <children>
                         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="600.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                                  <children>
                                     <Label prefWidth="45.0" text="Modelo" />
-                                    <TextField prefWidth="150.0" />
-                                    <ComboBox prefWidth="150.0" />
-                                    <Button mnemonicParsing="false" text="Añadir" />
+                                    <TextField fx:id="modeloText" prefWidth="150.0" />
+                                    <ComboBox  fx:id="modeloCombo" prefWidth="150.0" />
+                                    <Button fx:id="añadir" onAction="#bttnAñadirHandler" mnemonicParsing="false" text="Añadir" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -83,7 +83,7 @@
                                     <Insets left="25.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="200.0" spacing="10.0">
                                  <children>
                                     <Label text="Modo de empleo" />
                                  </children>
@@ -94,27 +94,27 @@
                                     <Insets left="25.0" />
                                  </padding>
                               </HBox>
-                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="230.0" prefWidth="600.0">
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="210.0" prefWidth="600.0">
                                  <padding>
                                     <Insets left="25.0" top="10.0" />
                                  </padding>
                                  <children>
-                                    <TextArea maxHeight="-Infinity" prefHeight="210.0" prefWidth="550.0" />
+                                    <TextArea fx:id="modeloArea" maxHeight="-Infinity" prefHeight="210.0" prefWidth="550.0" />
                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <Button fx:id="guardar" onAction="#bttnGuardarHandler" mnemonicParsing="false" text="Guardar" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Button mnemonicParsing="false" text="Guardar" />
-               </children>
-               <padding>
-                  <Insets right="25.0" />
-               </padding>
             </HBox>
          </children>
       </VBox>

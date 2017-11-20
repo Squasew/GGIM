@@ -120,8 +120,8 @@
                </padding>
                <children>
                   <Button fx:id="eliminar" onAction="#bttnEliminarHandler" mnemonicParsing="false" text="Eliminar" />
-                  <Button fx:id="modificar" mnemonicParsing="false" text="Modificar" />
-                  <Button fx:id="añadir" mnemonicParsing="false" text="Añadir" />
+                  <Button fx:id="modificar" onAction="#bttnModificarHandler" mnemonicParsing="false" text="Modificar" />
+                  <Button fx:id="añadir" onAction="#bttnAñadirHandler" mnemonicParsing="false" text="Añadir" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="200.0">
