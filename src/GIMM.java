@@ -5,11 +5,11 @@
  */
 
 
-import ggim.control.GestionUsuarios;
-import ggim.control.GestionUsuariosTest;
+import ggim.model.GestionUsuarios;
+import ggim.model.GestionUsuariosTest;
 import ggim.ui.controllers.GI01Controller;
-import ggim.control.IncidenciasManager;
-import ggim.control.IncidenciasManagerTestGenerator;
+import ggim.model.IncidenciasManager;
+import ggim.model.IncidenciasManagerTestGenerator;
 import ggim.ui.controllers.L01Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

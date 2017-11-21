@@ -5,7 +5,8 @@
  */
 package ggim.ui.controllers;
 
-import ggim.model.MaquinaBean;
+import ggim.model.GM01TextGenInterface;
+import ggim.model.MaquinaBeanPedro;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,8 +33,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 /**
- *
- * @author ubuntu
+ * Clase controladora de la ventana GM01
+ * 
+ * @author Pedro Alonso Montejo
  */
 public class GM01Controller {
     
@@ -79,21 +81,37 @@ public class GM01Controller {
     
     //Definimos las variables extra que necesitaremos
     
-    private static final Logger LOGGER = Logger.getLogger( GI01Controller.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( GM01Controller.class.getName() );
     private Stage stage;
     private GM01TextGenInterface gm01;
     
     ObservableList maquinasList;
     
+    /**
+     * Metodo que asigna al stage de la ventana el stage recibido 
+     * 
+     * @param primaryStage es el stage en el que se inicializará la ventana
+     * @param gm01 es el administrador de datos de la ventana
+     */
     public void setStage(Stage primaryStage,GM01TextGenInterface gm01) {
         this.stage = primaryStage;
         this.gm01 = gm01;
     }
     
+    /**
+     *Metodo que devuelve el stage de esta ventana
+     * 
+     * @return devuelve el stage de la ventana
+     */
     public Stage getStage() {
         return this.stage;
     }
     
+    /**
+     * Metodo que inicializa la ventana
+     * 
+     * @param root
+     */
     public void initStage(Parent root) {
         
         Scene scene = new Scene(root);
@@ -105,6 +123,10 @@ public class GM01Controller {
         
     }
     
+    /**
+     * Metodo que se ocupa de inicializar el contenido de la ventana cada vez
+     * que esta se muestra
+     */
     public void handleWindowShowing () {
         
         //Definimos el estado de los elemtentos de la ventana
@@ -194,32 +216,25 @@ public class GM01Controller {
         
     }
     
-    public void bttnModificarHandler () throws IOException {
         
-        FXMLLoader loader = 
-                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
-            Parent root =
-                    (Parent) loader.load();
-            GM02Controller gm02 =
-                    ((GM02Controller)loader.getController());
-            gm02.setStage(stage, gm01, (MaquinaBean)tabla.getSelectionModel().getSelectedItem(),"Modificar");
-            gm02.initStage(root);
+    /**
+     *
+     * @throws IOException
+     */
+    public void bttnVolver () throws IOException {
         
-    }
-    
-    public void bttnAñadirHandler () throws IOException {
-        
-            FXMLLoader loader = 
-                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
-            Parent root =
-                    (Parent) loader.load();
-            GM02Controller gm02 =
-                    ((GM02Controller)loader.getController());
-            gm02.setStage(stage, gm01, null,"Añadir");
-            gm02.initStage(root);
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
+            Parent root= (Parent) loader.load();
+            MACcontroller controller= (MACcontroller)loader.getController();
+            controller.setStage(stage);
+            controller.initStage(root);
         
     }
     
+    /**
+     * Metodo que controla el botón limpiar. Limpia los campos de busqueda y
+     * reinicia los filtros de esta.
+     */
     public void handleBotonLimpiar () {
         
         idText.textProperty().setValue("");
@@ -233,9 +248,13 @@ public class GM01Controller {
         
     }
     
+    /**
+     * Metodo que controla el botón filtrar. Filtra la tabla con los datos
+     * introducidos en los campos de busqueda avanzada.
+     */
     public void handleBotonFiltrar () {
         
-        ObservableList <MaquinaBean> maquinasFilter = maquinasList;
+        ObservableList <MaquinaBeanPedro> maquinasFilter = maquinasList;
         
         if (idText.textProperty().getValue().trim().equals("")) {
             
@@ -272,14 +291,63 @@ public class GM01Controller {
         
     }
     
+    /**
+     * Metodo que controla los cambios de selección en la tabla de la ventana.
+     * Habilita los campos "botón Eliminar" y "boton Modificar" cuando hay un
+     * cambio de slección.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
     public void handleCambioSeleccionMaquina (ObservableValue observable,
             Object oldValue, Object newValue) {
         
         eliminar.setDisable(false);
         modificar.setDisable(false);
         
+    }  
+        
+    /**
+     * Metodo que controla los cambios en el campo de texto editable de la
+     * busqueda avanzada. Habilita o deshabilita los campos "botón Filtrar" así
+     * como el resto de campos del apartado de busqueda avanzada.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
+    public void idTextListener (ObservableValue observable,
+            String oldValue, String newValue) {
+        
+        if (!newValue.trim().equals("")){
+            
+            maquinaCombo.setDisable(true);
+            fechaPicker.setDisable(true);
+            estadoCombo.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else {
+            
+            maquinaCombo.setDisable(false);
+            fechaPicker.setDisable(false);
+            estadoCombo.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
     }
     
+    /**
+     * Metodo que controla los cambios de selección en el comboBox de las
+     * distintas maquinas. Habilita o deshabilita
+     * los campos "botón Filtrar" y "textField ID" dependiendo del contenido de
+     * los campos "combo Estado", "fecha Revision" y este mismo campo.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
     public void maquinaChangeListener (ObservableValue observable,
             String oldValue, String newValue){
     
@@ -303,6 +371,46 @@ public class GM01Controller {
         
     }
     
+        
+    /**
+     * Metodo que comtrola los campos de selección de fecha en el selector de
+     * fechas. Habilita o deshabilita
+     * los campos "botón Filtrar" y "textField ID" dependiendo del contenido de
+     * los campos "combo Estado", "comboMaquina" y este mismo campo.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
+    public void fechaChangeListener (ObservableValue observable,
+            String oldValue, String newValue) {
+        
+        if (!newValue.trim().equals("")){
+            
+            idText.setDisable(true);
+            filtrar.setDisable(false);
+            
+        } else if (newValue.trim().equals("")
+                    && maquinaCombo.getValue().equals("Sin modelo")
+                    && estadoCombo.getValue().equals("Sin estado")) {
+            
+            idText.setDisable(false);
+            filtrar.setDisable(true);
+            
+        }
+        
+    }
+    
+    /**
+     * Metodo que controla los cambios de seleccion en el comboBox de los
+     * distintos estados. Habilita o deshabilita
+     * los campos "botón Filtrar" y "textField ID" dependiendo del contenido de
+     * los campos "combo Maquina", "fecha Revision" y este mismo campo.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
     public void estadoChangeListener (ObservableValue observable,
             String oldValue, String newValue){
     
@@ -325,62 +433,57 @@ public class GM01Controller {
         
     }
     
+    /**
+     * Metodo que controla el botón eliminar. Elimina el registro seleccionado
+     * en la tabla de los registros de maquinas.
+     */
     public void bttnEliminarHandler () {
     
+        gm01.eliminarMaquina((MaquinaBeanPedro)tabla.getSelectionModel().getSelectedItem());
+        
         tabla.getItems().remove(tabla.getSelectionModel().getSelectedItem());
         
         tabla.refresh();
         
     }
-    
-    public void idTextListener (ObservableValue observable,
-            String oldValue, String newValue) {
+
         
-        if (!newValue.trim().equals("")){
-            
-            maquinaCombo.setDisable(true);
-            fechaPicker.setDisable(true);
-            estadoCombo.setDisable(true);
-            filtrar.setDisable(false);
-            
-        } else {
-            
-            maquinaCombo.setDisable(false);
-            fechaPicker.setDisable(false);
-            estadoCombo.setDisable(false);
-            filtrar.setDisable(true);
-            
-        }
+    /**
+     * Metodo que controla el botón modificar. Abre una nueva ventana con los
+     * datos que se envían como parametro (Un MaquinaBean recogido de la tabla)
+     * que permite modificar el registro.
+     * 
+     * @throws IOException
+     */
+    public void bttnModificarHandler () throws IOException {
         
-    }
-    
-    public void fechaChangeListener (ObservableValue observable,
-            String oldValue, String newValue) {
-        
-        if (!newValue.trim().equals("")){
-            
-            idText.setDisable(true);
-            filtrar.setDisable(false);
-            
-        } else if (newValue.trim().equals("")
-                    && maquinaCombo.getValue().equals("Sin modelo")
-                    && estadoCombo.getValue().equals("Sin estado")) {
-            
-            idText.setDisable(false);
-            filtrar.setDisable(true);
-            
-        }
+        FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
+            Parent root =
+                    (Parent) loader.load();
+            GM02Controller gm02 =
+                    ((GM02Controller)loader.getController());
+            gm02.setStage(stage, gm01, (MaquinaBeanPedro)tabla.getSelectionModel().getSelectedItem(),"Modificar");
+            gm02.initStage(root);
         
     }
-    
-    public void bttnVolver () throws IOException {
+     
+    /**
+     * Metodo que controla el botón añadir. Abre una nueva ventana con datos
+     * generados automaticamente que permite añadir un nuevo registro.
+     * 
+     * @throws IOException
+     */
+    public void bttnAñadirHandler () throws IOException {
         
-        FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
-            Parent root= (Parent) loader.load();
-            MACcontroller controller= (MACcontroller)loader.getController();
-            controller.setManager(null,gm01);
-            controller.setStage(stage);
-            controller.initStage(root);
+            FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
+            Parent root =
+                    (Parent) loader.load();
+            GM02Controller gm02 =
+                    ((GM02Controller)loader.getController());
+            gm02.setStage(stage, gm01, null,"Añadir");
+            gm02.initStage(root);
         
     }
     

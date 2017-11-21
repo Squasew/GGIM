@@ -5,12 +5,12 @@
  */
 package ggim.ui.controllers;
 
-import ggim.control.MaquinasManagerTestGenerator;
-import ggim.control.MaquinasManager;
-import ggim.control.IncidenciaBean;
-import ggim.control.IncidenciasManager;
-import ggim.control.GestionUsuarios;
-import ggim.control.GestionUsuariosTest;
+import ggim.model.MaquinasManagerTestGenerator;
+import ggim.model.MaquinasManager;
+import ggim.model.IncidenciaBean;
+import ggim.model.IncidenciasManager;
+import ggim.model.GestionUsuarios;
+import ggim.model.GestionUsuariosTest;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -421,7 +421,6 @@ public class GI01Controller implements Initializable{
             FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
             Parent root= (Parent) loader.load();
             MACcontroller controller= (MACcontroller)loader.getController();
-            controller.setManager(man,null);
             controller.setStage(stage);
             controller.initStage(root);
         }catch(IOException e){

@@ -97,8 +97,8 @@
             <Separator prefWidth="200.0" />
             <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="580.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnComp" mnemonicParsing="false" text="Comprovar" />
-                  <Button fx:id="btnAccept" mnemonicParsing="false" text="Acceptar" />
+                  <Button fx:id="btnComp" mnemonicParsing="false" text="Comprobar" />
+                  <Button fx:id="btnAccept" mnemonicParsing="false" text="Aceptar" />
                </children>
                <padding>
                   <Insets left="10.0" right="10.0" />

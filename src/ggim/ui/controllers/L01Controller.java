@@ -5,10 +5,10 @@
  */
 package ggim.ui.controllers;
 
-import ggim.control.IncidenciasManagerTestGenerator;
-import ggim.control.IncidenciasManager;
-import ggim.control.GestionUsuarios;
-import ggim.control.GestionUsuariosTest;
+import ggim.model.IncidenciasManagerTestGenerator;
+import ggim.model.IncidenciasManager;
+import ggim.model.GestionUsuarios;
+import ggim.model.GestionUsuariosTest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -110,9 +110,6 @@ public class L01Controller implements Initializable {
             Parent root= (Parent)loader.load();
             MACcontroller controller= ((MACcontroller)loader.getController());
             controller.setStage(stage);
-            IncidenciasManager inciMan= new IncidenciasManagerTestGenerator();
-            GM01TextGenInterface gm01 = new GM01TextGen();
-            controller.setManager(inciMan,gm01);
             controller.initStage(root);
         }catch(IOException e){
             Logger.getLogger(GI01Controller.class.getName()).log(Level.SEVERE, null, e);

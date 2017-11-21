@@ -5,7 +5,8 @@
  */
 package ggim.ui.controllers;
 
-import ggim.model.MaquinaBean;
+import ggim.model.GM01TextGenInterface;
+import ggim.model.MaquinaBeanPedro;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -25,8 +26,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Charly
+ * Clase controladora de la ventana GM02
+ * 
+ * @author Pedro Alonso Montejo
  */
 public class GM02Controller {
     
@@ -62,15 +64,23 @@ public class GM02Controller {
     @FXML
             private TableColumn tbColEst;
     
-    private static final Logger LOGGER = Logger.getLogger( GI01Controller.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( GM02Controller.class.getName() );
     private Stage stage;
     private GM01TextGenInterface gm01;
-    private MaquinaBean mb;
+    private MaquinaBeanPedro mb;
     private String accion;
     
     ObservableList maquinasList;
     
-    public void setStage(Stage primaryStage,GM01TextGenInterface gm01, MaquinaBean mb, String accion) {
+    /**
+     * Metodo que asigna al stage de la ventana el stage recibido
+     * 
+     * @param primaryStage es el stage que se le establecerá a la ventana
+     * @param gm01 es el gestor de datos que se le establecerá a la ventana
+     * @param mb es el maquina bean que se utilizará en esta ventana
+     * @param accion es la acción que se está realizando en esta ventana
+     */
+    public void setStage(Stage primaryStage,GM01TextGenInterface gm01, MaquinaBeanPedro mb, String accion) {
         
         if (accion.equals("Añadir")) {
             this.mb = gm01.makeNew(mb);
@@ -82,10 +92,20 @@ public class GM02Controller {
         this.gm01 = gm01;
     }
     
+    /**
+     * Metodo que devuelve el stage de la ventana actual
+     * 
+     * @return devuelve el stage de la ventana actual
+     */
     public Stage getStage() {
         return this.stage;
     }
     
+    /**
+     * Metodo que inicializa la ventana
+     * 
+     * @param root
+     */
     public void initStage(Parent root) {
         
         Scene scene = new Scene(root);
@@ -97,6 +117,10 @@ public class GM02Controller {
         
     }
     
+    /**
+     * Metodo que establece el estado de los elementos en la creación de la
+     * ventana
+     */
     public void handleWindowShowing () {
         
         //Definimos que tipo de datos va a ser asignado a cada fila de la tabla
@@ -133,6 +157,11 @@ public class GM02Controller {
         
     }
     
+    /**
+     * Metodo que controla el botón volver
+     * 
+     * @throws IOException
+     */
     public void bttnVolverHandler() throws IOException {
         
         FXMLLoader loader = 
@@ -146,6 +175,15 @@ public class GM02Controller {
         
     }
     
+    /**
+     * Metodo que controla los cambios en el combo Modelo. Si el modelo
+     * seleccionado es distinto al actual, permite añadirlo modificando
+     * el modelo de la maquina actual.
+     * 
+     * @param observable es el valor que puede ser modificado
+     * @param oldValue es el valor anterior al actual
+     * @param newValue es el nuevo valor adoptado
+     */
     public void modeloChangeListener (ObservableValue observable,
             String oldValue, String newValue) {
         
@@ -161,16 +199,25 @@ public class GM02Controller {
         
         modeloText.setText(gm01.getModeloName(newValue));
         modeloArea.setText(gm01.getModeloText(newValue));
-        
     }
     
-    public void bttnAñadirHandler() {
+    /**
+     * Metodo que controla el botón modificar. Modifica el modelo actual de la
+     * máquina por el nuevo modelo seleccionado
+     */
+    public void bttnModificarHandler() {
         
         mb.setMaquina(modeloCombo.getSelectionModel().getSelectedItem());
         añadir.setDisable(true);
-        
+        tabla.refresh();
     }
     
+    /**
+     * Metodo que controla el botón guardar. Guarda los cambios realizados o
+     * añade el registro de una máquina nueva.
+     * 
+     * @throws IOException
+     */
     public void bttnGuardarHandler() throws IOException {
         
         if (accion.equals("Modificar")) {

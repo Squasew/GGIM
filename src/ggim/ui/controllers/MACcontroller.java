@@ -5,10 +5,14 @@
  */
 package ggim.ui.controllers;
 
-import ggim.control.GestionUsuarios;
-import ggim.control.GestionUsuariosTest;
-import ggim.control.IncidenciasManager;
+import ggim.model.GM01TextGen;
+import ggim.model.GM01TextGenInterface;
+import ggim.model.GestionUsuarios;
+import ggim.model.GestionUsuariosTest;
+import ggim.model.IncidenciasManager;
+import ggim.model.IncidenciasManagerTestGenerator;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,8 +23,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Charly
+ * Clase controladora de la ventana menuAdmin
+ * @author Pedro Alonso Montejo
  */
 public class MACcontroller {
 
@@ -36,22 +40,24 @@ public class MACcontroller {
         RadioButton b5;
     
     private Stage stage;
-    private IncidenciasManager man;
-    private GM01TextGenInterface gm01;
     private ToggleGroup tg;
+    private static final Logger LOGGER = Logger.getLogger( MACcontroller.class.getName() );
     
-    void setStage(Stage stage) {
+    /**
+     * Metodo que asigna el stage de la ventana al stage recibido
+     * 
+     * @param stage es el stage en el que se mostrará la ventana
+     */
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
-
-    void setManager(IncidenciasManager inciMan, GM01TextGenInterface gm01) {
-        if(inciMan != null)
-            this.man= inciMan;
-        if(gm01 != null)
-            this.gm01 = gm01;
-    }
-
-    void initStage(Parent root) {
+    
+    /**
+     * Metodo que se ocupa de mostrar el contenido de la venana
+     * 
+     * @param root
+     */
+    public void initStage(Parent root) {
         
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -62,7 +68,30 @@ public class MACcontroller {
         
     }
     
-   public void handleWindowShowing() {
+       
+    /**
+     * Metodo que devuelve al usuario a la ventana de login cuando pulsa este
+     * botón
+     * 
+     * @throws IOException
+     */
+    public void btnVolver() throws IOException {
+       
+       GestionUsuarios man= new GestionUsuariosTest();
+        FXMLLoader loader= new FXMLLoader(
+                    getClass().getResource("/ggim/ui/fxml/L01.fxml"));
+        Parent root= (Parent)loader.load();
+        L01Controller controller= (L01Controller)loader.getController();
+        controller.setStage(stage);
+        controller.setManager(man);
+        controller.initStage(root);
+       
+   }
+    
+    /**
+     * Metodo que inicia los elementos de la ventana
+     */
+    public void handleWindowShowing() {
        
        tg = new ToggleGroup();
        b1.setToggleGroup(tg);
@@ -76,13 +105,20 @@ public class MACcontroller {
        
    }
     
-   public void btnHandler() throws IOException {
+    /**
+     * Metodo que abre la ventana de administración especificada en la selección
+     * de los radiobotones cuando se pulsa el botón
+     * 
+     * @throws IOException
+     */
+    public void btnHandler() throws IOException {
        
        if (tg.getSelectedToggle().equals(b4)) {
            
         FXMLLoader loader= new FXMLLoader(
                     getClass().getResource("/ggim/ui/fxml/GI01.fxml"));
         Parent root= (Parent)loader.load();
+        IncidenciasManager man = new IncidenciasManagerTestGenerator() {};
         GI01Controller controller= (GI01Controller)loader.getController();
         controller.setStage(stage);
         controller.setManager(man);
@@ -93,6 +129,7 @@ public class MACcontroller {
         FXMLLoader loader= new FXMLLoader(
                     getClass().getResource("/ggim/ui/fxml/GM01.fxml"));
         Parent root= (Parent)loader.load();
+        GM01TextGenInterface gm01 = new GM01TextGen();
         GM01Controller controller= (GM01Controller)loader.getController();
         controller.setStage(stage,gm01);
         controller.initStage(root);
@@ -100,18 +137,5 @@ public class MACcontroller {
        }
        
    }
-   
-   public void btnVolver() throws IOException {
-       
-       GestionUsuarios man= new GestionUsuariosTest();
-        FXMLLoader loader= new FXMLLoader(
-                    getClass().getResource("/ggim/ui/fxml/L01.fxml"));
-        Parent root= (Parent)loader.load();
-        L01Controller controller= (L01Controller)loader.getController();
-        controller.setStage(stage);
-        controller.setManager(man);
-        controller.initStage(root);
-       
-   }
-   
+    
 }

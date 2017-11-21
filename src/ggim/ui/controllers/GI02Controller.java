@@ -5,10 +5,10 @@
  */
 package ggim.ui.controllers;
 
-import ggim.control.MaquinaBean;
-import ggim.control.MaquinasManager;
-import ggim.control.IncidenciaBean;
-import ggim.control.IncidenciasManager;
+import ggim.model.MaquinaBean;
+import ggim.model.MaquinasManager;
+import ggim.model.IncidenciaBean;
+import ggim.model.IncidenciasManager;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

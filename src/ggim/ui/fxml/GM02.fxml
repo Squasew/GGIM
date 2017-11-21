@@ -74,7 +74,7 @@
                                     <Label prefWidth="45.0" text="Modelo" />
                                     <TextField fx:id="modeloText" prefWidth="150.0" />
                                     <ComboBox  fx:id="modeloCombo" prefWidth="150.0" />
-                                    <Button fx:id="añadir" onAction="#bttnAñadirHandler" mnemonicParsing="false" text="Añadir" />
+                                    <Button fx:id="añadir" onAction="#bttnModificarHandler" mnemonicParsing="false" text="Modificar" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />

@@ -5,8 +5,8 @@
  */
 package ggim.ui.controllers;
 
-import ggim.control.IncidenciaBean;
-import ggim.control.IncidenciasManager;
+import ggim.model.IncidenciaBean;
+import ggim.model.IncidenciasManager;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
