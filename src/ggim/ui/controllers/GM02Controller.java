@@ -154,17 +154,18 @@ public class GM02Controller {
         //Añadirmos listeners para el combo
         modeloCombo.valueProperty().addListener(this::modeloChangeListener);
         
+        LOGGER.info("LOG: Se muestra la ventana de control de maquinas 02");
         
     }
     
     /**
      * Metodo que controla el botón volver
-     * 
-     * @throws IOException
      */
-    public void bttnVolverHandler() throws IOException {
+    public void bttnVolverHandler(){
         
-        FXMLLoader loader = 
+        try {
+            
+            FXMLLoader loader = 
                     new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM01.fxml"));
             Parent root =
                     (Parent) loader.load();
@@ -172,6 +173,15 @@ public class GM02Controller {
                     ((GM01Controller)loader.getController());
             gm01.setStage(stage,this.gm01);
             gm01.initStage(root);
+            
+            LOGGER.info("LOG: Se cierra la ventana de control de maquinas 02");
+            
+        } catch (IOException e) {
+            
+            LOGGER.info("LOG: Se ha producido un error al cerrar la ventana de"
+                    + "control de maquinas 02");
+            
+        }
         
     }
     
@@ -190,10 +200,12 @@ public class GM02Controller {
          if (newValue.equals(mb.getMaquina())){
             
             añadir.setDisable(true);
+            LOGGER.info("LOG: El nuevo valor de modelo es igual al actual");
             
         } else {
             
             añadir.setDisable(false);
+            LOGGER.info("LOG: El nuevo valor de modelo es diferente al actual");
             
         }
         
@@ -210,6 +222,9 @@ public class GM02Controller {
         mb.setMaquina(modeloCombo.getSelectionModel().getSelectedItem());
         añadir.setDisable(true);
         tabla.refresh();
+        
+        LOGGER.info("LOG: El valor del modelo ha sido actualizado");
+        
     }
     
     /**
@@ -225,10 +240,14 @@ public class GM02Controller {
             gm01.modificarMaquina(mb);
             bttnVolverHandler();
             
+            LOGGER.info("LOG: Se ha modificado un registro de máquina");
+            
         } else {
             
             gm01.getAllMaquinas().add(mb);
             bttnVolverHandler();
+            
+            LOGGER.info("LOG: Se ha añadido un registro de máquina");
             
         }
         

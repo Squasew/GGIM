@@ -214,20 +214,32 @@ public class GM01Controller {
             }
         });
         
+        LOGGER.info("LOG: Se muestra la ventana de control de maquinas 01");
+        
     }
     
         
     /**
-     *
-     * @throws IOException
+     * Metodo que devuelve al administrador a la ventana de menú de administrador
      */
-    public void bttnVolver () throws IOException {
+    public void bttnVolver (){
         
-        FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
+        try {
+            
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("/ggim/ui/fxml/MA00.fxml"));
             Parent root= (Parent) loader.load();
             MACcontroller controller= (MACcontroller)loader.getController();
             controller.setStage(stage);
             controller.initStage(root);
+            
+            LOGGER.info("LOG: Se cierra la ventana de control de maquinas 01");
+            
+        } catch (IOException e) {
+            
+            LOGGER.info("LOG: Se ha producido un error al cerrar la ventana de"
+                    + "control de maquinas 01");
+            
+        }
         
     }
     
@@ -246,6 +258,8 @@ public class GM01Controller {
         
         limpiar.setDisable(true);
         
+        LOGGER.info("LOG: Se limpian los filtros y campos de busqueda");
+        
     }
     
     /**
@@ -256,11 +270,15 @@ public class GM01Controller {
         
         ObservableList <MaquinaBeanPedro> maquinasFilter = maquinasList;
         
+        LOGGER.info("LOG: Se va a realizar un filtrado");
+        
         if (idText.textProperty().getValue().trim().equals("")) {
             
             if (!maquinaCombo.getSelectionModel().getSelectedItem().equals("Sin modelo")) {
                 
                 maquinasFilter = gm01.filterModelo(maquinasFilter,maquinaCombo.getSelectionModel().getSelectedItem());
+                
+                LOGGER.info("LOG: Se filtra por modelo");
                 
             }
             
@@ -268,11 +286,15 @@ public class GM01Controller {
                 
                 maquinasFilter = gm01.filterFecha(maquinasFilter,fechaPicker.getEditor().getText().trim());
                 
+                LOGGER.info("LOG: Se filtra por fecha");
+                
             }
             
             if (!estadoCombo.getSelectionModel().getSelectedItem().equals("Sin estado")) {
                 
                 maquinasFilter = gm01.filterEstado(maquinasFilter,estadoCombo.getSelectionModel().getSelectedItem());
+                
+                LOGGER.info("LOG: Se filtra por estado");
                 
             }
 
@@ -284,6 +306,8 @@ public class GM01Controller {
             maquinasFilter = gm01.filterID(maquinasFilter,idText.textProperty().getValue());
             tabla.setItems(maquinasFilter);
             tabla.refresh();
+            
+            LOGGER.info("LOG: Se filtra por id");
             
         }
         
@@ -306,6 +330,8 @@ public class GM01Controller {
         eliminar.setDisable(false);
         modificar.setDisable(false);
         
+        LOGGER.info("LOG: Se ha cambiado la selección en la máquina");
+        
     }  
         
     /**
@@ -327,12 +353,16 @@ public class GM01Controller {
             estadoCombo.setDisable(true);
             filtrar.setDisable(false);
             
+            LOGGER.info("LOG: El texto id tiene un id");
+            
         } else {
             
             maquinaCombo.setDisable(false);
             fechaPicker.setDisable(false);
             estadoCombo.setDisable(false);
             filtrar.setDisable(true);
+            
+            LOGGER.info("LOG: El texto id no tiene un id");
             
         }
         
@@ -356,6 +386,8 @@ public class GM01Controller {
             idText.setDisable(true);
             filtrar.setDisable(false);
             
+            LOGGER.info("LOG: El combo modelo tiene un modelo");
+            
         } else if (newValue.equals("Sin modelo")) {
             
             
@@ -364,6 +396,8 @@ public class GM01Controller {
               
                 idText.setDisable(false);
                 filtrar.setDisable(true);
+                
+                LOGGER.info("LOG: El combo modelo está sin modelo");
                 
             }
             
@@ -390,12 +424,16 @@ public class GM01Controller {
             idText.setDisable(true);
             filtrar.setDisable(false);
             
+            LOGGER.info("LOG: El combo estado tiene una fecha");
+            
         } else if (newValue.trim().equals("")
                     && maquinaCombo.getValue().equals("Sin modelo")
                     && estadoCombo.getValue().equals("Sin estado")) {
             
             idText.setDisable(false);
             filtrar.setDisable(true);
+            
+            LOGGER.info("LOG: El datePicker revisión está sin fecha");
             
         }
         
@@ -419,6 +457,8 @@ public class GM01Controller {
             idText.setDisable(true);
             filtrar.setDisable(false);
             
+            LOGGER.info("LOG: El combo estado tiene un estado");
+            
         } else if (newValue.equals("Sin estado")) {
             
             if (fechaPicker.getEditor().getText().trim().equals("")
@@ -426,6 +466,8 @@ public class GM01Controller {
               
                 idText.setDisable(false);
                 filtrar.setDisable(true);
+                
+                LOGGER.info("LOG: El combo estado está sin estado");
                 
             }
             
@@ -445,6 +487,8 @@ public class GM01Controller {
         
         tabla.refresh();
         
+        LOGGER.info("LOG: Se eliminan registros de la tabla");
+        
     }
 
         
@@ -452,12 +496,11 @@ public class GM01Controller {
      * Metodo que controla el botón modificar. Abre una nueva ventana con los
      * datos que se envían como parametro (Un MaquinaBean recogido de la tabla)
      * que permite modificar el registro.
-     * 
-     * @throws IOException
      */
-    public void bttnModificarHandler () throws IOException {
+    public void bttnModificarHandler () {
         
-        FXMLLoader loader = 
+        try {
+            FXMLLoader loader = 
                     new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
             Parent root =
                     (Parent) loader.load();
@@ -465,26 +508,45 @@ public class GM01Controller {
                     ((GM02Controller)loader.getController());
             gm02.setStage(stage, gm01, (MaquinaBeanPedro)tabla.getSelectionModel().getSelectedItem(),"Modificar");
             gm02.initStage(root);
+            
+            LOGGER.info("LOG: Se cierra la ventana de control de maquinas 01");  
+            
+        } catch (IOException e) {
+            
+            LOGGER.info("LOG: Error al cerrar la ventana de control de maquinas"
+                    + " 01 mediante el botón modificar"); 
+            
+        }
         
+        
+            
     }
      
     /**
      * Metodo que controla el botón añadir. Abre una nueva ventana con datos
      * generados automaticamente que permite añadir un nuevo registro.
-     * 
-     * @throws IOException
      */
-    public void bttnAñadirHandler () throws IOException {
+    public void bttnAñadirHandler (){
         
-            FXMLLoader loader = 
+            try {
+                FXMLLoader loader = 
                     new FXMLLoader(getClass().getResource("/ggim/ui/fxml/GM02.fxml"));
-            Parent root =
-                    (Parent) loader.load();
-            GM02Controller gm02 =
-                    ((GM02Controller)loader.getController());
-            gm02.setStage(stage, gm01, null,"Añadir");
-            gm02.initStage(root);
-        
+                Parent root =
+                        (Parent) loader.load();
+                GM02Controller gm02 =
+                        ((GM02Controller)loader.getController());
+                gm02.setStage(stage, gm01, null,"Añadir");
+                gm02.initStage(root);
+                
+                LOGGER.info("LOG: Se cierra la ventana de control de maquinas 01");
+                
+            } catch (IOException e) {
+                
+                LOGGER.info("LOG: Error al cerrar la ventana de control de maquinas"
+                    + " 01 mediante el botón añadir"); 
+                
+            }
+           
     }
     
 }

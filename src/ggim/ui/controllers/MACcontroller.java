@@ -85,6 +85,8 @@ public class MACcontroller {
         controller.setStage(stage);
         controller.setManager(man);
         controller.initStage(root);
+        
+       LOGGER.info("LOG: Se cierra el menú de administrador");
        
    }
     
@@ -102,6 +104,9 @@ public class MACcontroller {
        b1.setDisable(true);
        b2.setDisable(true);
        b3.setDisable(true);
+       
+       LOGGER.info("LOG: Se muestra la ventana que contiene el menú"
+               + "de administrador");
        
    }
     
@@ -124,6 +129,8 @@ public class MACcontroller {
         controller.setManager(man);
         controller.initStage(root);
            
+        LOGGER.info("LOG: Se cierra el menú de administrador");
+        
        } else if (tg.getSelectedToggle().equals(b5)) {
            
         FXMLLoader loader= new FXMLLoader(
@@ -134,6 +141,8 @@ public class MACcontroller {
         controller.setStage(stage,gm01);
         controller.initStage(root);
            
+        LOGGER.info("LOG: Se cierra el menú de administrador");
+        
        }
        
    }

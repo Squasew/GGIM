@@ -53,7 +53,9 @@ public class GM01TextGen implements GM01TextGenInterface{
                 randomNum = 0 + (int)(Math.random() * 3);
                 maquinas.add(new MaquinaBeanPedro(i, modelos.get(randomNum).getModelo(), i+"/11/2018",i+"/12/2018","Usable"));
             }
-                
+        
+        LOGGER.info("Gestión: Se han inicializado los valores del gestor de datos");
+            
     }
     
     /**
@@ -63,6 +65,7 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllMaquinas() {
+        LOGGER.info("Gestión: Se han enviado todas las maquinas");
         return maquinas;
     }
     
@@ -73,6 +76,7 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllModelos() {
+        LOGGER.info("Gestión: Se han enviado todos los modelos + Sin selección");
         return modelosCombo;
     }
 
@@ -82,6 +86,7 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllModelos2() {
+        LOGGER.info("Gestión: Se han enviado todos los modelos");
         return modelosCombo2;
     }
     
@@ -188,6 +193,9 @@ public class GM01TextGen implements GM01TextGenInterface{
         ObservableList <MaquinaBeanPedro> maquinasFilteredFinished =
                 FXCollections.observableArrayList(maquinaFiltered);
         
+        LOGGER.info("Gestión: Se ha creado un registro de OL para la tabla de"
+                + "la ventana gestión de máquinas 02");
+        
         return maquinasFilteredFinished;
         
     }
@@ -207,6 +215,9 @@ public class GM01TextGen implements GM01TextGenInterface{
         modelo = 0 + (int)(Math.random() * 3);
         mb = new MaquinaBeanPedro(maxID, modelos.get(modelo).getModelo(), "13/11/2018", "13/12/2018","Usable");
             
+        LOGGER.info("Gestión: Se han creado un nuevo MaquinaPedroBean para un "
+                + "nuevo registro de máquina");
+        
         return mb;
         
     }
@@ -225,6 +236,8 @@ public class GM01TextGen implements GM01TextGenInterface{
                 break;
             }
         }
+        
+        LOGGER.info("Gestión: Se ha modificado una máquina");
         
     }
 
@@ -245,6 +258,8 @@ public class GM01TextGen implements GM01TextGenInterface{
             if (modelosCombo2.get(i).equals(mb.getMaquina()))
                 index = i; 
         }
+        
+        LOGGER.info("Gestión: Se ha enviado la posición del combo a deshabilitar");
         
         return index;
         
@@ -267,6 +282,8 @@ public class GM01TextGen implements GM01TextGenInterface{
                 name = modelos.get(i).getModelo();
         }
         
+        LOGGER.info("Gestión: Se ha enviado el nombre del modelo");
+        
         return name;
         
     }
@@ -288,6 +305,8 @@ public class GM01TextGen implements GM01TextGenInterface{
                 text = modelos.get(i).getModoEmp();
         }
         
+        LOGGER.info("Gestión: Se ha enviado el modo de empleo del modelo");
+        
         return text;
         
     }
@@ -304,6 +323,8 @@ public class GM01TextGen implements GM01TextGenInterface{
             if (maquinas.get(i).getID() == mb.getID())
                 maquinas.remove(i);
         }
+        
+        LOGGER.info("Gestión: Se ha eliminado el registro de una máquina");
         
     }
 
