@@ -7,12 +7,16 @@ package ggim.model;
 
 import ggim.model.MaquinaBeanPedro;
 import ggim.model.ModeloBean;
+import ggim.rest.MaquinaRestClient;
+import ggim.rest.ModeloRestClient;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Clase que se encarga de manejar los datos de las ventanas de Máquinas
@@ -22,10 +26,9 @@ import javafx.collections.ObservableList;
 public class GM01TextGen implements GM01TextGenInterface{
 
     private static final Logger LOGGER = Logger.getLogger( GM01TextGen.class.getName() );
-    private ArrayList <MaquinaBeanPedro> maquinas;
-    private ArrayList <String> modelosCombo;
-    private ArrayList <String> modelosCombo2;
-    private ArrayList <ModeloBean> modelos;
+    
+    private MaquinaRestClient maquinaClient;
+    private ModeloRestClient modeloClient;
     
     /**
      * Metodo costructor que añade valores a los diferentes ArrayList que serán
@@ -33,26 +36,8 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     public GM01TextGen(){
         
-        modelos = new ArrayList();
-            for (int i = 1; i <= 4; i++)
-                modelos.add(new ModeloBean("modelo"+i,"descripción"+i));
-        
-        modelosCombo = new ArrayList();
-        modelosCombo2 = new ArrayList();
-        modelosCombo.add("Sin modelo");
-            for (int i = 1; i <= modelos.size(); i++) {
-                
-                modelosCombo2.add(modelos.get(i-1).getModelo());
-                modelosCombo.add(modelos.get(i-1).getModelo());
-                
-            }
-        
-        maquinas = new ArrayList();
-        int randomNum;
-            for (int i = 10; i <= 25; i++) {
-                randomNum = 0 + (int)(Math.random() * 3);
-                maquinas.add(new MaquinaBeanPedro(i, modelos.get(randomNum).getModelo(), i+"/11/2018",i+"/12/2018","Usable"));
-            }
+        maquinaClient = new MaquinaRestClient();
+        modeloClient = new ModeloRestClient();
         
         LOGGER.info("Gestión: Se han inicializado los valores del gestor de datos");
             
@@ -65,8 +50,22 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllMaquinas() {
+        
+        LOGGER.info("Gestión: Se van a cargar los datos de las maquinas");
+        
+        ArrayList <MaquinaBeanPedro> maquinas = new ArrayList <> ();
+        
+        List<MaquinaBeanPedro> list = maquinaClient.findAll_XML(new GenericType<List<MaquinaBeanPedro>> () {});
+        for (MaquinaBeanPedro l : list) {
+            
+            MaquinaBeanPedro m = new MaquinaBeanPedro();
+            
+        }
+        
         LOGGER.info("Gestión: Se han enviado todas las maquinas");
-        return maquinas;
+        
+        return list;
+        
     }
     
     /**
@@ -76,8 +75,21 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllModelos() {
-        LOGGER.info("Gestión: Se han enviado todos los modelos + Sin selección");
-        return modelosCombo;
+        
+        LOGGER.info("Gestión: Se van a cargar todos los modelos + Sin selección");
+        
+        ArrayList <String> modelos = new ArrayList <> ();
+        modelos.add("Sin selección");
+        
+        List <ModeloBean> list = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
+        for (ModeloBean l : list) {
+            modelos.add(l.getModelo());
+        }
+        
+        LOGGER.info("Gestión: Se han cargado todos los modelos + Sin selección");
+        
+        return modelos;
+        
     }
 
     /**
@@ -86,8 +98,20 @@ public class GM01TextGen implements GM01TextGenInterface{
      */
     @Override
     public Collection getAllModelos2() {
-        LOGGER.info("Gestión: Se han enviado todos los modelos");
-        return modelosCombo2;
+        
+        LOGGER.info("Gestión: Se van a cargar todos los modelos");
+        
+        ArrayList <String> modelos = new ArrayList <> ();
+        
+        List <ModeloBean> list = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
+        for (ModeloBean l : list) {
+            modelos.add(l.getModelo());
+        }
+        
+        LOGGER.info("Gestión: Se han cargado todos los modelos");
+        
+        return modelos;
+        
     }
     
     /**
@@ -210,12 +234,24 @@ public class GM01TextGen implements GM01TextGenInterface{
     @Override
     public MaquinaBeanPedro makeNew(MaquinaBeanPedro mb) {
         
-        int modelo = maquinas.size();
-        int maxID = maquinas.get(modelo-1).getID() +1;
+        int maxID = 0;
+        
+        List <MaquinaBeanPedro> list = maquinaClient.findAll_XML(new GenericType<List<MaquinaBeanPedro>> () {});
+        for (MaquinaBeanPedro l : list) {
+            if (l.getID() > maxID) {
+                maxID = l.getID() +1;
+            }
+        }
+        
+        List <ModeloBean> mList = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
+        for (ModeloBean l : mList) {
+            modelos.add(l.getModelo());
+        }
+        
         modelo = 0 + (int)(Math.random() * 3);
         mb = new MaquinaBeanPedro(maxID, modelos.get(modelo).getModelo(), "13/11/2018", "13/12/2018","Usable");
             
-        LOGGER.info("Gestión: Se han creado un nuevo MaquinaPedroBean para un "
+        LOGGER.info("Gestión: Se ha creado un nuevo MaquinaPedroBean para un "
                 + "nuevo registro de máquina");
         
         return mb;

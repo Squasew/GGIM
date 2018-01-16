@@ -85,7 +85,7 @@ public class GM01Controller {
     private Stage stage;
     private GM01TextGenInterface gm01;
     
-    ObservableList maquinasList;
+    private ObservableList maquinasList;
     
     /**
      * Metodo que asigna al stage de la ventana el stage recibido 

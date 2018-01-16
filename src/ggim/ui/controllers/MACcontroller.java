@@ -83,7 +83,6 @@ public class MACcontroller {
         Parent root= (Parent)loader.load();
         L01Controller controller= (L01Controller)loader.getController();
         controller.setStage(stage);
-        controller.setManager(man);
         controller.initStage(root);
         
        LOGGER.info("LOG: Se cierra el menú de administrador");
