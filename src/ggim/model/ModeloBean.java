@@ -5,17 +5,29 @@
  */
 package ggim.model;
 
+import java.io.Serializable;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase Modelo Bean
  * 
  * @author Pedro Alonso Montejo
  */
-public class ModeloBean {
+@XmlRootElement(name="modelo")
+public class ModeloBean implements Serializable{
 
+    private final SimpleIntegerProperty id;
     private final SimpleStringProperty modelo;
     private final SimpleStringProperty modoEmp;
+    
+    public ModeloBean() {
+        this.id = new SimpleIntegerProperty(0);
+        this.modelo   = new SimpleStringProperty("");
+        this.modoEmp   = new SimpleStringProperty("");
+    }
     
     /**
      * Metodo que controla la creación del modelo (Constructor)
@@ -25,10 +37,20 @@ public class ModeloBean {
      * @param modoEmp es el modo de empleo que se le establecerá al modelo
      * cuando este se cree
      */
-    public ModeloBean(String modelo,
+    public ModeloBean(int id,
+                        String modelo,
                         String modoEmp) {
+        this.id = new SimpleIntegerProperty(id);
         this.modelo   = new SimpleStringProperty(modelo);
         this.modoEmp   = new SimpleStringProperty(modoEmp);
+    }
+    
+    @XmlElement(name="id")
+    public int getID () {
+        return this.id.get();
+    }
+    public void setID (int id) {
+        this.id.set(id);
     }
     
     /**
@@ -45,6 +67,7 @@ public class ModeloBean {
      * 
      * @return devuelve el identificador del modelo
      */
+    @XmlElement(name="nombre")
     public String getModelo () {
         return this.modelo.get();
     }
@@ -63,6 +86,7 @@ public class ModeloBean {
      * 
      * @return devuelve el metodo de empleo del modelo
      */
+    @XmlElement(name="modoEmpleo")
     public String getModoEmp () {
         return this.modoEmp.get();
     }

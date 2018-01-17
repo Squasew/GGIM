@@ -53,14 +53,7 @@ public class GM01TextGen implements GM01TextGenInterface{
         
         LOGGER.info("Gestión: Se van a cargar los datos de las maquinas");
         
-        ArrayList <MaquinaBeanPedro> maquinas = new ArrayList <> ();
-        
         List<MaquinaBeanPedro> list = maquinaClient.findAll_XML(new GenericType<List<MaquinaBeanPedro>> () {});
-        for (MaquinaBeanPedro l : list) {
-            
-            MaquinaBeanPedro m = new MaquinaBeanPedro();
-            
-        }
         
         LOGGER.info("Gestión: Se han enviado todas las maquinas");
         
@@ -235,6 +228,7 @@ public class GM01TextGen implements GM01TextGenInterface{
     public MaquinaBeanPedro makeNew(MaquinaBeanPedro mb) {
         
         int maxID = 0;
+        int modelo = 0;
         
         List <MaquinaBeanPedro> list = maquinaClient.findAll_XML(new GenericType<List<MaquinaBeanPedro>> () {});
         for (MaquinaBeanPedro l : list) {
@@ -244,12 +238,9 @@ public class GM01TextGen implements GM01TextGenInterface{
         }
         
         List <ModeloBean> mList = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
-        for (ModeloBean l : mList) {
-            modelos.add(l.getModelo());
-        }
         
-        modelo = 0 + (int)(Math.random() * 3);
-        mb = new MaquinaBeanPedro(maxID, modelos.get(modelo).getModelo(), "13/11/2018", "13/12/2018","Usable");
+        modelo = 0 + (int)(Math.random() * mList.size());
+        /*mb = new MaquinaBeanPedro(maxID, mList.get(modelo) , "13/11/2018", "13/12/2018", );*/
             
         LOGGER.info("Gestión: Se ha creado un nuevo MaquinaPedroBean para un "
                 + "nuevo registro de máquina");
@@ -266,12 +257,12 @@ public class GM01TextGen implements GM01TextGenInterface{
     @Override
     public void modificarMaquina(MaquinaBeanPedro mb) {
         
-        for (int i = 0; i <= maquinas.size(); i++) {
+        /*for (int i = 0; i <= maquinas.size(); i++) {
             if (maquinas.get(i).getID() == mb.getID()) {
                 maquinas.get(i).setMaquina(mb.getMaquina());
                 break;
             }
-        }
+        }*/
         
         LOGGER.info("Gestión: Se ha modificado una máquina");
         
@@ -290,10 +281,10 @@ public class GM01TextGen implements GM01TextGenInterface{
         
         int index = 0;
         
-        for (int i = 0; i < modelosCombo2.size(); i++) {
+        /*for (int i = 0; i < modelosCombo2.size(); i++) {
             if (modelosCombo2.get(i).equals(mb.getMaquina()))
                 index = i; 
-        }
+        }*/
         
         LOGGER.info("Gestión: Se ha enviado la posición del combo a deshabilitar");
         
@@ -313,10 +304,10 @@ public class GM01TextGen implements GM01TextGenInterface{
         
         String name = "";
         
-        for (int i = 0; i < modelos.size(); i++) {
+        /*for (int i = 0; i < modelos.size(); i++) {
             if ((modelos.get(i).getModelo()).equals(modelo))
                 name = modelos.get(i).getModelo();
-        }
+        }*/
         
         LOGGER.info("Gestión: Se ha enviado el nombre del modelo");
         
@@ -336,10 +327,10 @@ public class GM01TextGen implements GM01TextGenInterface{
         
         String text = "";
         
-        for (int i = 0; i < modelos.size(); i++) {
+        /*for (int i = 0; i < modelos.size(); i++) {
             if ((modelos.get(i).getModelo()).equals(modelo))
                 text = modelos.get(i).getModoEmp();
-        }
+        }*/
         
         LOGGER.info("Gestión: Se ha enviado el modo de empleo del modelo");
         
@@ -355,10 +346,10 @@ public class GM01TextGen implements GM01TextGenInterface{
     @Override
     public void eliminarMaquina(MaquinaBeanPedro mb) {
         
-        for (int i = 0; i < maquinas.size(); i++) {
+        /*for (int i = 0; i < maquinas.size(); i++) {
             if (maquinas.get(i).getID() == mb.getID())
                 maquinas.remove(i);
-        }
+        }*/
         
         LOGGER.info("Gestión: Se ha eliminado el registro de una máquina");
         

@@ -5,6 +5,8 @@
  */
 package ggim.rest;
 
+import ggim.model.GM01TextGen;
+import java.util.logging.Logger;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -28,6 +30,8 @@ public class ModeloRestClient {
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/GimnasioWebAplication/webresources";
+    
+    private static final Logger LOGGER = Logger.getLogger( ModeloRestClient.class.getName() );
 
     public ModeloRestClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

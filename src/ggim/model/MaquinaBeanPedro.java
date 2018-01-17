@@ -5,21 +5,34 @@
  */
 package ggim.model;
 
+import java.io.Serializable;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase Maquina Bean
  * 
  * @author Pedro Alonso Montejo
  */
-public class MaquinaBeanPedro {
+@XmlRootElement(name="maquina")
+public class MaquinaBeanPedro implements Serializable{
     
     private final SimpleIntegerProperty iD;
-    private final SimpleStringProperty maquina;
+    private final SimpleObjectProperty<ModeloBean> maquina;
     private final SimpleStringProperty revision;
     private final SimpleStringProperty prevision;
-    private final SimpleStringProperty estado;
+    private final SimpleObjectProperty<EstadoMaquina> estado;
+    
+    public MaquinaBeanPedro () {
+        this.iD         = new SimpleIntegerProperty(0);
+        this.maquina    = new SimpleObjectProperty<>(new ModeloBean());
+        this.revision   = new SimpleStringProperty("");
+        this.prevision   = new SimpleStringProperty("");
+        this.estado     = new SimpleObjectProperty("");
+    }
     
     /**
      * Metodo que controla la creación de una máquina (Constructor)
@@ -35,15 +48,15 @@ public class MaquinaBeanPedro {
      * se cree
      */
     public MaquinaBeanPedro(int id,
-                        String maquina,
+                        ModeloBean maquina,
                         String revision,
                         String prevision,
-                        String estado) {
+                        EstadoMaquina estado) {
         this.iD         = new SimpleIntegerProperty(id);
-        this.maquina    = new SimpleStringProperty(maquina);
+        this.maquina    = new SimpleObjectProperty<>(maquina);
         this.revision   = new SimpleStringProperty(revision);
         this.prevision   = new SimpleStringProperty(prevision);
-        this.estado     = new SimpleStringProperty(estado);
+        this.estado     = new SimpleObjectProperty(estado);
     }
     
     /**
@@ -60,6 +73,7 @@ public class MaquinaBeanPedro {
      * 
      * @return devuelve el ID actual de la máquina
      */
+    @XmlElement(name="id")
     public int getID () {
         return this.iD.get();
     }
@@ -69,7 +83,7 @@ public class MaquinaBeanPedro {
      * 
      * @param maquina es el modelo que se establecerá
      */
-    public void setMaquina (String maquina) {
+    public void setMaquina (ModeloBean maquina) {
         this.maquina.set(maquina);
     }
     
@@ -78,7 +92,8 @@ public class MaquinaBeanPedro {
      * 
      * @return devuelve el modelo actual de la máquina
      */
-    public String getMaquina () {
+    @XmlElement(name="modelo")
+    public ModeloBean getMaquina () {
         return this.maquina.get();
     }
     
@@ -96,6 +111,7 @@ public class MaquinaBeanPedro {
      * 
      * @return devuelve la fecha de revisión actual de la máquina
      */
+    @XmlElement(name="fechaUltimaRevision")
     public String getRevision () {
         return this.revision.get();
     }
@@ -114,6 +130,7 @@ public class MaquinaBeanPedro {
      * 
      * @return devuelve la fecha de la próxima revisión actual de la máquina
      */
+    @XmlElement(name="fechaProximaRevision")
     public String getPrevision () {
         return this.prevision.get();
     }
@@ -123,7 +140,7 @@ public class MaquinaBeanPedro {
      * 
      * @param estado es el estado que se establecerá
      */
-    public void setEstado (String estado) {
+    public void setEstado (EstadoMaquina estado) {
         this.estado.set(estado);
     }
     
@@ -132,7 +149,8 @@ public class MaquinaBeanPedro {
      * 
      * @return devuelve el estado actual de la máquina
      */
-    public String getEstado () {
+    @XmlElement(name="estado")
+    public EstadoMaquina getEstado () {
         return this.estado.get();
     }
     
