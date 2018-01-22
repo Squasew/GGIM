@@ -15,10 +15,10 @@ import javafx.beans.property.SimpleStringProperty;
 public class MaquinaBean {
     private SimpleStringProperty maquina;
     private SimpleStringProperty estado;
-    private SimpleIntegerProperty modelo;
+    //private SimpleIntegerProperty modelo;
     private SimpleStringProperty ultimaRevision;
     private SimpleStringProperty proximaRevision;
-    private SimpleStringProperty descripcion;
+    //private SimpleStringProperty descripcion;
     
     /**
      * Constructor de la calse MaquinaBean que recibe todos los atributos
@@ -32,27 +32,27 @@ public class MaquinaBean {
     public MaquinaBean(String maquina, String estado, Integer modelo ,String ultimaRevision,String proximaRevision ,String descripcion){
         this.maquina= new SimpleStringProperty(estado);
         this.estado=new SimpleStringProperty(estado);
-        this.modelo= new SimpleIntegerProperty(modelo);
+        //this.modelo= new SimpleIntegerProperty(modelo);
         this.ultimaRevision= new SimpleStringProperty(ultimaRevision);
         this.proximaRevision= new SimpleStringProperty(proximaRevision);
-        this.descripcion= new SimpleStringProperty(descripcion);
+        //this.descripcion= new SimpleStringProperty(descripcion);
     }
 
     /**
      * Metodo publico que devuelve un String
      * @return String
      */
-    public String getDescripcion() {
+    /*public String getDescripcion() {
         return this.descripcion.get();
-    }
+    }*/
 
     /**
      * Metodo publico que recibe un String
      * @param descripcion descripcion de maquina
      */
-    public void setDescripcion(String descripcion) {
+    /*public void setDescripcion(String descripcion) {
         this.descripcion.set(descripcion);
-    }
+    }*/
     
     /**
      * Metodo publico que devuelve un String
@@ -90,17 +90,17 @@ public class MaquinaBean {
      * Metodo publico que devuelve un Integer
      * @return Integer
      */
-    public Integer getModelo() {
+    /*public Integer getModelo() {
         return this.modelo.get();
-    }
+    }*/
 
     /**
      * Metodo publico que recibe un Integer
      * @param modelo modelo de maquina
      */
-    public void setModelo(Integer modelo) {
+    /*public void setModelo(Integer modelo) {
         this.modelo.set(modelo);
-    }
+    }*/
 
     /**
      * Metodo publico que devuelve un String

@@ -5,35 +5,43 @@
  */
 package ggim.beans;
 
+import java.util.Date;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase IncidenciaBean
+ *
  * @author Ismael Molano
  */
+@XmlRootElement(name = "incidencia")
 public class IncidenciaBean {
-     private final SimpleIntegerProperty id;
-     private final SimpleStringProperty maquina;
-     private final SimpleStringProperty fecha;
-     private final SimpleStringProperty estado;
+
+    private final SimpleIntegerProperty id;
+    private final SimpleObjectProperty<MaquinaBean> maquina;
+    private final SimpleObjectProperty<Date> fecha;
+    private final SimpleObjectProperty<EstadoIncidencia> estado;
 
     /**
      * Constructor de IncidenciaBean, que recibe todos los atributos de la clase
+     *
      * @param id identidicador de incidencia
-     * @param maquina nombre de maquina
+     * @param maquina objeto maquina deesta incidencia
      * @param fecha fecha de incidencia
      * @param estado estado de incidencia
      */
-    public IncidenciaBean(Integer id, String maquina, String fecha, String estado) {
+    public IncidenciaBean(Integer id, MaquinaBean maquina, Date fecha, EstadoIncidencia estado) {
         this.id = new SimpleIntegerProperty(id);
-        this.maquina= new SimpleStringProperty(maquina);
-        this.estado= new SimpleStringProperty(estado);
-        this.fecha= new SimpleStringProperty(fecha);
+        this.maquina = new SimpleObjectProperty<MaquinaBean>(maquina);
+        this.estado = new SimpleObjectProperty<EstadoIncidencia>(estado);
+        this.fecha = new SimpleObjectProperty<Date>(fecha);
     }
 
     /**
      * Metodo publico que devuelve un Integer
+     *
      * @return Integer
      */
     public Integer getId() {
@@ -42,67 +50,65 @@ public class IncidenciaBean {
 
     /**
      * Metodo publico que devuelve un String
+     *
      * @return String
      */
-    public String  getMaquina() {
+    public MaquinaBean getMaquina() {
         return this.maquina.get();
     }
 
     /**
      * Metodo publico que devuelve un String
+     *
      * @return String
      */
-    public String getFecha() {
+    @XmlElement(name = "fechaAlta")
+    public Date getFecha() {
         return this.fecha.get();
     }
 
     /**
      * Metodo publico que devuelve un String
+     *
      * @return String
      */
-    public String getEstado() {
+    public EstadoIncidencia getEstado() {
         return this.estado.get();
     }
-    
+
     /**
      * Metodo publico que recibe un Integer
+     *
      * @param id identidicador de incidencia
      */
-    public void setId(Integer id){
-       this.id.set(id);
+    public void setId(Integer id) {
+        this.id.set(id);
     }
-    
+
     /**
      * Metodo publico que recibe un String
+     *
      * @param maquina nombre de maquina
      */
-    public void setMaquina(String maquina){
+    public void setMaquina(MaquinaBean maquina) {
         this.maquina.set(maquina);
     }
-    
+
     /**
      * Metodo publico que recibe un String
+     *
      * @param fecha fecha de incidencia
      */
-    public void setFecha(String fecha){
+    public void setFecha(Date fecha) {
         this.fecha.set(fecha);
     }
-    
+
     /**
      * Metodo publico que recibe un String
+     *
      * @param estado estado de incidencia
      */
-    public void setEstado(String estado){
+    public void setEstado(EstadoIncidencia estado) {
         this.estado.set(estado);
     }
-    
-    
-    
-    
-    
-    
-    
-     
-    
-    
 }
