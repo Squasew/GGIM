@@ -7,6 +7,7 @@ package ggim.model;
 
 import ggim.beans.EstadoIncidencia;
 import ggim.beans.IncidenciaBean;
+import ggim.beans.MaquinaBean;
 import java.util.Collection;
 import java.util.Date;
 import javafx.collections.ObservableList;
@@ -56,7 +57,7 @@ public interface IncidenciasManager {
      * @param filtro Coleccion de inciodencias a filtrar
      * @return Collection
      */
-    public Collection getFiltradasMaquinas(String maquina);
+    public Collection getFiltradasMaquinas(MaquinaBean maquina);
 
     /**
      * Metodo publico que devuelve una coleccion de IncidenciasBean que coincidan
@@ -65,7 +66,7 @@ public interface IncidenciasManager {
      * @param filtro Coleccion de inciodencias a filtrar
      * @return Collection
      */
-    public Collection getFiltradasEstados(String estado);
+    public Collection getFiltradasEstados(EstadoIncidencia estado);
 
     /**
      * Metodo publico que devuelve una coleccion de IncidenciasBean que coincidan

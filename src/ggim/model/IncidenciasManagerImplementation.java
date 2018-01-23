@@ -7,8 +7,8 @@ package ggim.model;
 
 import ggim.beans.EstadoIncidencia;
 import ggim.beans.IncidenciaBean;
+import ggim.beans.MaquinaBean;
 import ggim.rest.IncideciasRestClient;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,21 +17,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.collections.ObservableList;
 import javax.ws.rs.core.GenericType;
-import sun.util.logging.PlatformLogger;
 
 /**
  *
  * @author ubuntu
  */
-public class IncdenciasManagerImplementation implements IncidenciasManager {
+public class IncidenciasManagerImplementation implements IncidenciasManager {
 
     private IncideciasRestClient webClient;
     private GM01TextGen maquinasTG;
-    private static final Logger LOGGER = Logger.getLogger(IncidenciasManagerTestGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IncidenciasManagerImplementation.class.getName());
 
-    public IncdenciasManagerImplementation() {
+    public IncidenciasManagerImplementation() {
         webClient = new IncideciasRestClient();
     }
 
@@ -79,14 +77,21 @@ public class IncdenciasManagerImplementation implements IncidenciasManager {
     }
 
     @Override
-    public Collection getFiltradasMaquinas(String maquina) {
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection getFiltradasMaquinas(MaquinaBean maquina) {
+        LOGGER.info("IncidenciasManagerImplementation: getFiltradasMaquinas: buscando incidencias por maquina");
+        List<IncidenciaBean> incidencias= webClient.findByMaquina(new GenericType<List<IncidenciaBean>>(){}, maquina.getMaquina().getModelo());
+        if (incidencias.size() > 0) {
+            LOGGER.log(Level.INFO, "IncidenciasManagerImplementation: getFiltradasEstados: encontradas {0} incidencias", incidencias.size());
+        } else {
+            LOGGER.info("IncidenciasManagerImplementation: getFiltradasEstados: no se han encontrado con esa id");
+        }
+        return incidencias;
     }
 
     @Override
-    public Collection getFiltradasEstados(String estado) {
+    public Collection getFiltradasEstados(EstadoIncidencia e) {
         LOGGER.info("IncidenciasManagerImplementation: getFiltradasEstados: buscando incidencias por estado");
+        String estado=e.name();
         List<IncidenciaBean> incidencias = webClient.findByEstado(new GenericType<List<IncidenciaBean>>() {
         }, estado);
         if (incidencias.size() > 0) {

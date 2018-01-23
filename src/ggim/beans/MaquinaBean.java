@@ -6,131 +6,149 @@
 package ggim.beans;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase MaquinaBean
  * @author Ismael Molano
  */
+@XmlRootElement(name="maquina")
 public class MaquinaBean {
-    private SimpleStringProperty maquina;
-    private SimpleStringProperty estado;
-    //private SimpleIntegerProperty modelo;
-    private SimpleStringProperty ultimaRevision;
-    private SimpleStringProperty proximaRevision;
-    //private SimpleStringProperty descripcion;
+    
+    private final SimpleIntegerProperty iD;
+    private final SimpleObjectProperty<ModeloBean> maquina;
+    private final SimpleStringProperty revision;
+    private final SimpleStringProperty prevision;
+    private final SimpleObjectProperty<EstadoMaquina> estado;
+    
+    public MaquinaBean() {
+        this.iD = new SimpleIntegerProperty(0);
+        this.maquina = new SimpleObjectProperty<ModeloBean>(new ModeloBean());
+        this.revision = new SimpleStringProperty("");
+        this.prevision = new SimpleStringProperty("");
+        this.estado = new SimpleObjectProperty("");
+    }
     
     /**
-     * Constructor de la calse MaquinaBean que recibe todos los atributos
-     * @param maquina nombre de maquina
-     * @param estado estado de maquina
-     * @param modelo modelo de maquina
-     * @param ultimaRevision fecha de ultima revision
-     * @param proximaRevision fecha de proxima revision
-     * @param descripcion descripcion de maquina
+     * Metodo que controla la creación de una máquina (Constructor)
+     * 
+     * @param id es el ID que se le establecerá a la máquina cuando esta se cree
+     * @param maquina es el modelo de la maquina que se le establecerá cuando
+     * esta se cree
+     * @param revision es la fecha de la última revisión que se le establecerá
+     * cuando esta se cree
+     * @param prevision es la fecha de la próxima revisión que se le establecerá
+     * cuando esta se cree
+     * @param estado es el estado que se le establecerá a la máquina cuando esta
+     * se cree
      */
-    public MaquinaBean(String maquina, String estado, Integer modelo ,String ultimaRevision,String proximaRevision ,String descripcion){
-        this.maquina= new SimpleStringProperty(estado);
-        this.estado=new SimpleStringProperty(estado);
-        //this.modelo= new SimpleIntegerProperty(modelo);
-        this.ultimaRevision= new SimpleStringProperty(ultimaRevision);
-        this.proximaRevision= new SimpleStringProperty(proximaRevision);
-        //this.descripcion= new SimpleStringProperty(descripcion);
+    public MaquinaBean(int id,
+                        ModeloBean maquina,
+                        String revision,
+                        String prevision,
+                        EstadoMaquina estado) {
+        this.iD         = new SimpleIntegerProperty(id);
+        this.maquina    = new SimpleObjectProperty<>(maquina);
+        this.revision   = new SimpleStringProperty(revision);
+        this.prevision   = new SimpleStringProperty(prevision);
+        this.estado     = new SimpleObjectProperty(estado);
     }
-
-    /**
-     * Metodo publico que devuelve un String
-     * @return String
-     */
-    /*public String getDescripcion() {
-        return this.descripcion.get();
-    }*/
-
-    /**
-     * Metodo publico que recibe un String
-     * @param descripcion descripcion de maquina
-     */
-    /*public void setDescripcion(String descripcion) {
-        this.descripcion.set(descripcion);
-    }*/
     
     /**
-     * Metodo publico que devuelve un String
-     * @return String
+     * Metodo que establece el ID de la máquina
+     * 
+     * @param id el ID que se establecerá
      */
-    public String getMaquina() {
-        return this.maquina.get();
+    public void setID (int id) {
+        this.iD.set(id);
     }
-
+    
     /**
-     * Metodo publico que recibe un String
-     * @param maquina nombre de maquina
+     * Metodo que recoge el ID actual de la máquina
+     * 
+     * @return devuelve el ID actual de la máquina
      */
-    public void setMaquina(String maquina) {
+    @XmlElement(name="id")
+    public int getID () {
+        return this.iD.get();
+    }
+    
+    /**
+     * Metodo que establece el modelo de la máquina
+     * 
+     * @param maquina es el modelo que se establecerá
+     */
+    public void setMaquina (ModeloBean maquina) {
         this.maquina.set(maquina);
     }
-
+    
     /**
-     * Metodo publico que devuelve un String
-     * @return String
+     * Metodo que recoge el modelo actual de la máquina
+     * 
+     * @return devuelve el modelo actual de la máquina
      */
-    public String getEstado() {
-        return this.estado.get();
+    @XmlElement(name="modelo")
+    public ModeloBean getMaquina () {
+        return this.maquina.get();
     }
-
+    
     /**
-     * Metodo publico que recibe un String
-     * @param estado estado de maquina
+     * Metodo que establece la fecha de la última revisión de la máquina
+     * 
+     * @param revision es la fecha que se establecerá
      */
-    public void setEstado(String estado) {
+    public void setRevision (String revision) {
+        this.revision.set(revision);
+    }
+    
+    /**
+     * Metodo que recoge la fecha de la última revisión actual de la máquina
+     * 
+     * @return devuelve la fecha de revisión actual de la máquina
+     */
+    @XmlElement(name="fechaUltimaRevision")
+    public String getRevision () {
+        return this.revision.get();
+    }
+    
+    /**
+     * Metodo que establece la fecha de la proxima revisión de la máquina
+     * 
+     * @param prevision es la fecha que se establecerá
+     */
+    public void setPrevision (String prevision) {
+        this.revision.set(prevision);
+    }
+    
+    /**
+     * Metodo que recoge la fecha de de la próxima revisión actual de la máquina
+     * 
+     * @return devuelve la fecha de la próxima revisión actual de la máquina
+     */
+    @XmlElement(name="fechaProximaRevision")
+    public String getPrevision () {
+        return this.prevision.get();
+    }
+    
+    /**
+     * Metodo queestablece el estado de la máquina
+     * 
+     * @param estado es el estado que se establecerá
+     */
+    public void setEstado (EstadoMaquina estado) {
         this.estado.set(estado);
     }
-
+    
     /**
-     * Metodo publico que devuelve un Integer
-     * @return Integer
+     * Metodo que recoge el estado actual de la máquina
+     * 
+     * @return devuelve el estado actual de la máquina
      */
-    /*public Integer getModelo() {
-        return this.modelo.get();
-    }*/
-
-    /**
-     * Metodo publico que recibe un Integer
-     * @param modelo modelo de maquina
-     */
-    /*public void setModelo(Integer modelo) {
-        this.modelo.set(modelo);
-    }*/
-
-    /**
-     * Metodo publico que devuelve un String
-     * @return String
-     */
-    public String getUltimaRevision() {
-        return this.ultimaRevision.get();
-    }
-
-    /**
-     * Metodo publico que recibe un String
-     * @param ultimaRevision fecha de ultima revision
-     */
-    public void setUltimaRevision(String ultimaRevision) {
-        this.ultimaRevision.set(ultimaRevision);
-    }
-
-    /**
-     * Metodo publico que devuelve un String
-     * @return String
-     */
-    public String getProximaRevision() {
-        return this.proximaRevision.get();
-    }
-
-    /**
-     * Metodo publico que recibe un String
-     * @param proximaRevision fecha de proxima revision
-     */
-    public void setProximaRevision(String proximaRevision) {
-        this.proximaRevision.set(proximaRevision);
-    }
+    @XmlElement(name="estado")
+    public EstadoMaquina getEstado () {
+        return this.estado.get();
+}
 }

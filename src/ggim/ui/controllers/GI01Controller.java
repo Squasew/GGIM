@@ -9,19 +9,16 @@ import ggim.beans.EstadoIncidencia;
 import ggim.model.MaquinasManagerTestGenerator;
 import ggim.model.MaquinasManager;
 import ggim.beans.IncidenciaBean;
+import ggim.beans.MaquinaBean;
 import ggim.model.IncidenciasManager;
-import ggim.model.GestionUsuarios;
-import ggim.model.GestionUsuariosTest;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.value.ObservableValue;
@@ -49,7 +46,7 @@ import javafx.util.StringConverter;
  *
  * @author Ismael Molano
  */
-public class GI01Controller implements Initializable {
+public class GI01Controller {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger(GI01Controller.class.getName());
@@ -77,11 +74,10 @@ public class GI01Controller implements Initializable {
     private Button btnLimpiar;
     @FXML
     private Button btnFiltrar;
-
     @FXML
-    private ComboBox<String> comboMaquinas;
+    private ComboBox comboMaquinas;
     @FXML
-    private ComboBox<String> comboEstados;
+    private ComboBox comboEstados;
     @FXML
     private TextField txtID;
     @FXML
@@ -94,22 +90,18 @@ public class GI01Controller implements Initializable {
      * @param stage Stage de la ventana
      *
      */
-    public void setStage(Stage stage) {
+    public void setStage(Stage stage, IncidenciasManager man) {
         this.stage = stage;
-    }
-
-    /**
-     * Metodo publico que devuelve un objeto IncidenciasManager
-     *
-     * @param man manager de IncidenciasManager
-     */
-    public void setManager(IncidenciasManager man) {
         this.man = man;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    /**
+     * Metodo que devuelve el stage de esta ventana
+     *
+     * @return devuelve el stage de la ventana
+     */
+    public Stage getStage() {
+        return this.stage;
     }
 
     /**
@@ -119,18 +111,122 @@ public class GI01Controller implements Initializable {
      * @param root objeto Parent de la ventana
      */
     public void initStage(Parent root) {
+
         Scene scene = new Scene(root);
-        stage.setTitle("Gestión de incidencias");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
         cargarDatos();
+        stage.setTitle("Gestión de incidencias");
+        stage.show();
         LOGGER.info("ventana cargada, con datos");
+
     }
 
     /**
-     * Metodo publico que es llamado al hacer click en uno de las flas de una
-     * tabla
+     * Metodo publico que prepara la los datos de la ventana al cargar
+     */
+    private void cargarDatos() {
+
+        //Deshabilitar los botones de Eliminar, Modificar, Filtrar, Limpiar estan deshabilitados
+        btnEliminar.setDisable(true);
+        btnModificar.setDisable(true);
+        btnFiltrar.setDisable(true);
+        btnLimpiar.setDisable(true);
+
+        //Se definen los tipos de datos que va a contener cada fila de la tabla
+        tcolumId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcolumMaq.setCellValueFactory(new PropertyValueFactory<>("maquina"));
+        tcolumRev.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        tcolumEst.setCellValueFactory(new PropertyValueFactory<>("estado"));
+
+        //Se buscan todas las incidencias con el metodo getAllIncidencias
+        incidencias
+                = FXCollections.observableArrayList(man.getAllIncidencias());
+
+        //Se asignan las incidencias a la tabla 
+        tablaIncidencias.setItems(incidencias);
+
+        //Se define un listener para la seleccion de filas en la tabla
+        tablaIncidencias.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(this::handleIncidenciasTableSelectionChange);
+
+        //Se cargan los datos de los ComboBox
+        //Se cargan los estados
+        AniadirEstados();
+        //Se cargan las Maquinas
+        AniadirMaquinas();
+
+        //Se añaden los escuchadores de eventos a los botones 
+        
+        btnEliminar.setOnAction(this::buttonOnClick);
+        btnAniadir.setOnAction(this::buttonOnClick);
+        btnModificar.setOnAction(this::buttonOnClick);
+        btnFiltrar.setOnAction(this::buttonOnClick);
+        btnLimpiar.setOnAction(this::buttonOnClick);
+        btnVolver.setOnAction(this::buttonOnClick);
+        
+        //Se añaden los escuchadores de cambios de textos a los campos de ID, Fecha, ComboBox Estados y ComboBox Maquinas
+        comboEstados.valueProperty().addListener(this::comboEstadosChangeListener);
+        comboMaquinas.valueProperty().addListener(this::comboMaquinasChangeListener);
+        txtID.textProperty().addListener(this::textChangeListener);
+        txtDate.getEditor().textProperty().addListener(this::dateChangeListener);
+        //Convertidor de fecha 
+        txtDate.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
+
+            {
+                txtDate.setPromptText(dateFormat);
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+    }
+
+    /**
+     * Metodo publico utilizado para cargar las maquinas en un comboBox
+     */
+    private void AniadirMaquinas() {
+        ObservableList<MaquinaBean> maquinas = FXCollections.observableArrayList(man.getAllMaquinas());
+
+        comboMaquinas.setItems(maquinas);
+        comboMaquinas.getSelectionModel().selectFirst();
+
+        LOGGER.info("Maquinas añadidas");
+
+    }
+
+    /**
+     * Metodo publico utilizado para cargar los estados en un ComboBox
+     */
+    private void AniadirEstados() {
+        ObservableList<EstadoIncidencia> estados = FXCollections.observableArrayList(man.getAllEstados());
+        comboEstados.setItems(estados);
+        comboEstados.getSelectionModel().selectFirst();
+        LOGGER.info("Estados añadidos");
+    }
+
+    /**
+     * Metodo listener que es llamado al hacerclick en alguna de las filas de la
+     * tabla, habilita los botones de Eliminar, Añadir y Modificar tabla
      *
      * @param observable valor que puede cambiar
      * @param oldValue antiguo valor
@@ -143,25 +239,6 @@ public class GI01Controller implements Initializable {
             btnModificar.setDisable(false);
             LOGGER.info("bonones " + btnAniadir + ", " + btnEliminar + "y " + btnModificar + " habilitados");
         }
-    }
-
-    /**
-     * Metodo publico utilizado para cargar las maquinas en un comboBox
-     */
-    private void AniadirMaquinas() {
-        ObservableList<String> maquinas = FXCollections.observableArrayList(man.getAllMaquinas());
-        comboMaquinas.setItems(maquinas);
-        LOGGER.info("Maquinas añadidas");
-    }
-
-    /**
-     * Metodo publico utilizado para cargar los estados en un ComboBox
-     */
-    private void AniadirEstados() {
-        ObservableList<String> estados = FXCollections.observableArrayList(man.getAllEstados());
-        //EstadoIncidencia estados[]= man.getAllEstados();
-        comboEstados.setItems(estados);
-        LOGGER.info("Estados añadidos");
     }
 
     /**
@@ -179,9 +256,9 @@ public class GI01Controller implements Initializable {
             btnLimpiar.setDisable(false);
             LOGGER.info(txtID + " deshabilitado," + btnLimpiar + " y " + btnFiltrar + " habilitados");
         } else {
-            String estado = comboEstados.getSelectionModel().getSelectedItem();
-            String maquina = comboMaquinas.getSelectionModel().getSelectedItem();
-            if (estado.equals("Sin selección") && maquina.equals("Sin selección")) {
+            EstadoIncidencia estado = (EstadoIncidencia) comboEstados.getSelectionModel().getSelectedItem();
+            MaquinaBean maquina = (MaquinaBean) comboMaquinas.getSelectionModel().getSelectedItem();
+            if (estado == null && maquina == null) {
                 txtID.setDisable(false);
                 btnFiltrar.setDisable(true);
                 LOGGER.info(txtID + " habilitado, " + btnFiltrar + " deshabilitado");
@@ -230,8 +307,8 @@ public class GI01Controller implements Initializable {
             LOGGER.info(txtID + " deshabilitado, " + btnFiltrar + " y " + btnLimpiar + " habilitados");
         } else {
             String date = txtDate.getEditor().getText().trim();
-            String maquina = comboMaquinas.getSelectionModel().getSelectedItem();
-            if (date.equals("") && maquina.equals("Sin selección")) {
+            MaquinaBean maquina = (MaquinaBean) comboMaquinas.getSelectionModel().getSelectedItem();
+            if (date.equals("") && maquina == null) {
                 txtID.setDisable(false);
                 btnFiltrar.setDisable(true);
                 LOGGER.info(btnFiltrar + " deshabilitado, " + txtID + " habilitado");
@@ -255,9 +332,9 @@ public class GI01Controller implements Initializable {
             LOGGER.info(txtID + " deshabilitado, " + btnFiltrar + " y " + btnLimpiar + " habilitados");
         } else {
             String date = txtDate.getEditor().getText().trim();
-            String estado = comboEstados.getSelectionModel().getSelectedItem();
+            EstadoIncidencia estado = (EstadoIncidencia) comboEstados.getSelectionModel().getSelectedItem();
             try {
-                if (date.equals("") && estado != null && estado.equals("Sin selección")) {
+                if (date.equals("") && estado != null && estado == null) {
                     txtID.setDisable(false);
                     btnFiltrar.setDisable(true);
                     LOGGER.info(txtID + " deshabilitado, " + btnFiltrar + " habilitado");
@@ -305,7 +382,7 @@ public class GI01Controller implements Initializable {
     /**
      * Metodo publico que filtra por distintos campos los objetos de una lista
      */
-    private void filtrar(){
+    private void filtrar() {
         try {
             ObservableList<IncidenciaBean> filtro = incidencias;
             if (txtID.isDisabled()) {
@@ -315,12 +392,14 @@ public class GI01Controller implements Initializable {
                     filtro = FXCollections.observableArrayList(man.getFiltradasFecha(dma.parse(txtDate.getEditor().getText())));
                 }
                 //Buscamos por nombre de maquina
-                if (!(comboMaquinas.getSelectionModel().getSelectedItem().equals("Sin selección"))) {
-                    filtro = FXCollections.observableArrayList(man.getFiltradasMaquinas(comboMaquinas.getSelectionModel().getSelectedItem()));
+                if (!(comboMaquinas.getSelectionModel().getSelectedItem() == null)) {
+                    MaquinaBean maquina = (MaquinaBean) comboMaquinas.getSelectionModel().getSelectedItem();
+                    filtro = FXCollections.observableArrayList(man.getFiltradasMaquinas(maquina));
                 }
                 //Buscamos por estado
                 if (!(comboEstados.getSelectionModel().getSelectedItem().equals("Sin selección"))) {
-                    filtro = FXCollections.observableArrayList(man.getFiltradasEstados(comboEstados.getSelectionModel().getSelectedItem()));
+                    EstadoIncidencia estado = (EstadoIncidencia) comboEstados.getSelectionModel().getSelectedItem();
+                    filtro = FXCollections.observableArrayList(man.getFiltradasEstados(estado));
                 }
                 LOGGER.info("Filtros realizados");
             } else {
@@ -401,60 +480,6 @@ public class GI01Controller implements Initializable {
     }
 
     /**
-     * Metodo publico que prepara la los datos de la ventana al cargar
-     */
-    private void cargarDatos() {
-        tcolumId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tcolumMaq.setCellValueFactory(new PropertyValueFactory<>("maquina"));
-        tcolumRev.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        tcolumEst.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        incidencias = FXCollections.observableArrayList(man.getAllIncidencias());
-        tablaIncidencias.setItems(incidencias);
-        tablaIncidencias.getSelectionModel().selectedItemProperty().addListener(this::handleIncidenciasTableSelectionChange);
-        btnEliminar.setDisable(true);
-        btnEliminar.setOnAction(this::buttonOnClick);
-        btnAniadir.setOnAction(this::buttonOnClick);
-        btnModificar.setDisable(true);
-        btnModificar.setOnAction(this::buttonOnClick);
-        btnFiltrar.setDisable(true);
-        btnFiltrar.setOnAction(this::buttonOnClick);
-        btnLimpiar.setDisable(true);
-        btnLimpiar.setOnAction(this::buttonOnClick);
-        btnVolver.setOnAction(this::buttonOnClick);
-        txtID.textProperty().addListener(this::textChangeListener);
-        txtDate.getEditor().textProperty().addListener(this::dateChangeListener);
-        StringConverter converter = new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
-
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        };
-        txtDate.setConverter(converter);
-        txtDate.setPromptText(dateFormat);
-        comboEstados.valueProperty().addListener(this::comboEstadosChangeListener);
-        comboMaquinas.valueProperty().addListener(this::comboMaquinasChangeListener);
-        AniadirMaquinas();
-        AniadirEstados();
-        comboMaquinas.getSelectionModel().selectFirst();
-        comboEstados.getSelectionModel().selectFirst();
-    }
-
-    /**
      * Metodo publico para volver a la ventana l01
      */
     private void volver() {
@@ -468,4 +493,5 @@ public class GI01Controller implements Initializable {
             LOGGER.info("Error en volver()");
         }
     }
+
 }
