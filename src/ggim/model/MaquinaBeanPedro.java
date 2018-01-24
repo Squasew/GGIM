@@ -149,7 +149,7 @@ public class MaquinaBeanPedro implements Serializable{
      * 
      * @return devuelve el estado actual de la máquina
      */
-    @XmlElement(name="estado")
+   
     public EstadoMaquina getEstado () {
         return this.estado.get();
     }

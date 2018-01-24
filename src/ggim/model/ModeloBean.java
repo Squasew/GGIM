@@ -91,4 +91,9 @@ public class ModeloBean implements Serializable{
         return this.modoEmp.get();
     }
     
+    @Override
+    public String toString () {
+        return this.modelo.get();
+    } 
+    
 }

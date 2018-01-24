@@ -346,10 +346,7 @@ public class GM01TextGen implements GM01TextGenInterface{
     @Override
     public void eliminarMaquina(MaquinaBeanPedro mb) {
         
-        /*for (int i = 0; i < maquinas.size(); i++) {
-            if (maquinas.get(i).getID() == mb.getID())
-                maquinas.remove(i);
-        }*/
+        maquinaClient.remove(String.valueOf(mb.getID()));
         
         LOGGER.info("Gestión: Se ha eliminado el registro de una máquina");
         

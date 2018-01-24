@@ -148,8 +148,8 @@ public class GM02Controller {
         modeloArea.setDisable(true);
         añadir.setDisable(true);
         
-        modeloText.setText(gm01.getModeloName(mb.getMaquina()));
-        modeloArea.setText(gm01.getModeloText(mb.getMaquina()));
+        /*modeloText.setText(gm01.getModeloName(mb.getMaquina()));
+        modeloArea.setText(gm01.getModeloText(mb.getMaquina()));*/
         
         //Añadirmos listeners para el combo
         modeloCombo.valueProperty().addListener(this::modeloChangeListener);
@@ -219,7 +219,7 @@ public class GM02Controller {
      */
     public void bttnModificarHandler() {
         
-        mb.setMaquina(modeloCombo.getSelectionModel().getSelectedItem());
+        /*mb.setMaquina(modeloCombo.getSelectionModel().getSelectedItem());*/
         añadir.setDisable(true);
         tabla.refresh();
         
