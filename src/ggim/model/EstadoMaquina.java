@@ -13,7 +13,7 @@ public enum EstadoMaquina {
     /**
      * maquina en reparacion
      */
-    Reparacion,
+    Reparación,
     /**
      * maquina reparada
      */

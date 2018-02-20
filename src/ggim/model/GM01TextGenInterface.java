@@ -78,7 +78,7 @@ public interface GM01TextGenInterface {
      * @param mb
      * @return
      */
-    public MaquinaBeanPedro makeNew(MaquinaBeanPedro mb);
+    public void makeNew(MaquinaBeanPedro mb);
 
     /**
      *

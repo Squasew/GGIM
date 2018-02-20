@@ -171,8 +171,8 @@ public class GM01Controller {
             
         ArrayList <String> estados = new ArrayList();
             estados.add("Sin estado");
-            estados.add("Usable");
-            estados.add("Fuera de uso");
+            estados.add("Reparación");
+            estados.add("Reparada");
         
         ObservableList estadosList =
                 FXCollections.observableArrayList(estados);

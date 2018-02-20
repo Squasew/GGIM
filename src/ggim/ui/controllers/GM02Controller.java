@@ -5,9 +5,14 @@
  */
 package ggim.ui.controllers;
 
+import ggim.model.EstadoMaquina;
 import ggim.model.GM01TextGenInterface;
 import ggim.model.MaquinaBeanPedro;
+import ggim.model.ModeloBean;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,12 +23,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javax.swing.JOptionPane;
 
 /**
  * Clase controladora de la ventana GM02
@@ -33,44 +41,36 @@ import javafx.stage.Stage;
 public class GM02Controller {
     
     //Definimos los elemntos de la ventana
-        //Primero los botones
-    
+        
     @FXML
-            private Button añadir;
+        private TextField txtID;
     @FXML
-            private Button guardar;
-    
-    //Ahora definimos el resto de los campos
-    
+        private TextField txtRevision;
     @FXML
-            private TextField modeloText;
+        private TextField txtPrevision;
     @FXML
-            private ComboBox <String> modeloCombo;
+        private TextField txtEstado;
     @FXML
-            private TextArea modeloArea;
-    
-        //Definimos los elementos de la tabla
-    
+        private TextField txtModelo;
     @FXML
-            private TableView tabla;
+        private TextArea txtModo;
     @FXML
-            private TableColumn tbColID;
+        private DatePicker dateRevision;
     @FXML
-            private TableColumn tbColMod;
+        private DatePicker datePrevision;
     @FXML
-            private TableColumn tbColRev;
+        private ComboBox comboEstado;
     @FXML
-            private TableColumn tbColPrev;
-    @FXML
-            private TableColumn tbColEst;
+        private ComboBox comboModelo;
     
     private static final Logger LOGGER = Logger.getLogger( GM02Controller.class.getName() );
     private Stage stage;
     private GM01TextGenInterface gm01;
     private MaquinaBeanPedro mb;
+    private MaquinaBeanPedro mb2;
     private String accion;
     
-    ObservableList maquinasList;
+    
     
     /**
      * Metodo que asigna al stage de la ventana el stage recibido
@@ -83,13 +83,32 @@ public class GM02Controller {
     public void setStage(Stage primaryStage,GM01TextGenInterface gm01, MaquinaBeanPedro mb, String accion) {
         
         if (accion.equals("Añadir")) {
-            this.mb = gm01.makeNew(mb);
+            
+            this.mb = new MaquinaBeanPedro();
+            
+            int maxID = 0;
+            ArrayList <MaquinaBeanPedro> maquinas =
+                    (ArrayList <MaquinaBeanPedro>) gm01.getAllMaquinas();
+            
+            for (MaquinaBeanPedro m : maquinas) {
+                
+                if (m.getID()>=maxID) {
+                    maxID = m.getID()+1;
+                }
+                
+            }
+            
+            this.mb.setID(maxID);
+            
         } else {
             this.mb = mb;
         }
+        
         this.accion = accion;
         this.stage = primaryStage;
         this.gm01 = gm01;
+        this.mb2 = new MaquinaBeanPedro();
+        
     }
     
     /**
@@ -123,36 +142,101 @@ public class GM02Controller {
      */
     public void handleWindowShowing () {
         
-        //Definimos que tipo de datos va a ser asignado a cada fila de la tabla
+        txtID.setEditable(false);
+        txtRevision.setEditable(false);
+        txtPrevision.setEditable(false);
+        txtEstado.setEditable(false);
+        txtModelo.setEditable(false);
+        txtModo.setEditable(false);
         
-        tbColID.setCellValueFactory(new PropertyValueFactory<>("iD"));
-        tbColMod.setCellValueFactory(new PropertyValueFactory<>("maquina"));
-        tbColEst.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        tbColRev.setCellValueFactory(new PropertyValueFactory<>("revision"));
-        tbColPrev.setCellValueFactory(new PropertyValueFactory<>("prevision"));
-
-        //Insertamos en la tabla el elemento que nos interesa
+        txtID.setText(String.valueOf(mb.getID()));
         
-        tabla.setItems(gm01.getCertain(mb));   
+        if (this.accion.equals("Añadir")) {
+            txtRevision.setText(mb.getRevision());
+            txtPrevision.setText(mb.getPrevision());
+            txtEstado.setText(mb.getEstado().toString());
+            txtModelo.setText(mb.getMaquina().toString());
+            txtModo.setText(mb.getMaquina().getModoEmp());
+        } else {
+            txtRevision.setText("No hay datos disponibles");
+            txtPrevision.setText("No hay datos disponibles");
+            txtEstado.setText("No hay datos disponibles");
+            txtModelo.setText("No hay datos disponibles");
+            txtModo.setText("No hay datos disponibles");
+        }
         
-        //Insertamos los modelos en el comboBox
+        ArrayList <ModeloBean> modelos =
+                (ArrayList <ModeloBean>) gm01.getAllModelos2();
         
         ObservableList modelosList =
-                FXCollections.observableArrayList(gm01.getAllModelos2());
+                FXCollections.observableArrayList(gm01.getAllModelos());
         
-        modeloCombo.setItems(modelosList);
-        modeloCombo.getSelectionModel().select(gm01.getIndex(mb));
+        comboModelo.setItems(modelosList);
+        comboModelo.getSelectionModel().selectFirst();
         
-        //Marcamos el estado de los demás elementos
-        modeloText.setDisable(true);
-        modeloArea.setDisable(true);
-        añadir.setDisable(true);
+        ArrayList <String> estados = new ArrayList();
+            estados.add("Reparación");
+            estados.add("Reparada");
         
-        /*modeloText.setText(gm01.getModeloName(mb.getMaquina()));
-        modeloArea.setText(gm01.getModeloText(mb.getMaquina()));*/
+        ObservableList estadosList =
+                FXCollections.observableArrayList(estados);
         
-        //Añadirmos listeners para el combo
-        modeloCombo.valueProperty().addListener(this::modeloChangeListener);
+        comboEstado.setItems(estadosList);
+        comboEstado.getSelectionModel().selectFirst();
+        
+        datePrevision.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd/MM/yyyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                datePrevision.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+        
+        dateRevision.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd/MM/yyyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                dateRevision.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
         
         LOGGER.info("LOG: Se muestra la ventana de control de maquinas 02");
         
@@ -186,48 +270,6 @@ public class GM02Controller {
     }
     
     /**
-     * Metodo que controla los cambios en el combo Modelo. Si el modelo
-     * seleccionado es distinto al actual, permite añadirlo modificando
-     * el modelo de la maquina actual.
-     * 
-     * @param observable es el valor que puede ser modificado
-     * @param oldValue es el valor anterior al actual
-     * @param newValue es el nuevo valor adoptado
-     */
-    public void modeloChangeListener (ObservableValue observable,
-            String oldValue, String newValue) {
-        
-         if (newValue.equals(mb.getMaquina())){
-            
-            añadir.setDisable(true);
-            LOGGER.info("LOG: El nuevo valor de modelo es igual al actual");
-            
-        } else {
-            
-            añadir.setDisable(false);
-            LOGGER.info("LOG: El nuevo valor de modelo es diferente al actual");
-            
-        }
-        
-        modeloText.setText(gm01.getModeloName(newValue));
-        modeloArea.setText(gm01.getModeloText(newValue));
-    }
-    
-    /**
-     * Metodo que controla el botón modificar. Modifica el modelo actual de la
-     * máquina por el nuevo modelo seleccionado
-     */
-    public void bttnModificarHandler() {
-        
-        /*mb.setMaquina(modeloCombo.getSelectionModel().getSelectedItem());*/
-        añadir.setDisable(true);
-        tabla.refresh();
-        
-        LOGGER.info("LOG: El valor del modelo ha sido actualizado");
-        
-    }
-    
-    /**
      * Metodo que controla el botón guardar. Guarda los cambios realizados o
      * añade el registro de una máquina nueva.
      * 
@@ -235,19 +277,39 @@ public class GM02Controller {
      */
     public void bttnGuardarHandler() throws IOException {
         
-        if (accion.equals("Modificar")) {
-            
-            gm01.modificarMaquina(mb);
-            bttnVolverHandler();
-            
-            LOGGER.info("LOG: Se ha modificado un registro de máquina");
+        if (dateRevision.getEditor().getText().trim().equals("")
+                    || datePrevision.getEditor().getText().trim().equals("")) {
+                
+            JOptionPane.showMessageDialog(null, "Hay campos sin completar");
             
         } else {
             
-            gm01.getAllMaquinas().add(mb);
-            bttnVolverHandler();
+            mb2.setID(mb.getID());
             
-            LOGGER.info("LOG: Se ha añadido un registro de máquina");
+            if (comboEstado.getSelectionModel().getSelectedItem().equals(EstadoMaquina.Reparación)) {
+                mb2.setEstado(EstadoMaquina.Reparación);
+            } else {
+                mb2.setEstado(EstadoMaquina.Reparada);
+            }
+            
+            mb2.setPrevision(datePrevision.getEditor().getText());
+            mb2.setRevision(dateRevision.getEditor().getText());
+            mb2.setMaquina((ModeloBean) comboModelo.getSelectionModel().getSelectedItem());
+            
+            if (accion.equals("Modificar")) {
+
+                gm01.modificarMaquina(mb2);
+                bttnVolverHandler();
+
+                LOGGER.info("LOG: Se ha modificado un registro de máquina");
+            
+            } else {
+
+                gm01.makeNew(mb2);
+                bttnVolverHandler();
+                
+            }
+        
             
         }
         

@@ -225,27 +225,11 @@ public class GM01TextGen implements GM01TextGenInterface{
      * @return un nuevo MaquinaBeanPedro
      */
     @Override
-    public MaquinaBeanPedro makeNew(MaquinaBeanPedro mb) {
+    public void makeNew(MaquinaBeanPedro mb) {
         
-        int maxID = 0;
-        int modelo = 0;
+        maquinaClient.create_XML(mb);
         
-        List <MaquinaBeanPedro> list = maquinaClient.findAll_XML(new GenericType<List<MaquinaBeanPedro>> () {});
-        for (MaquinaBeanPedro l : list) {
-            if (l.getID() > maxID) {
-                maxID = l.getID() +1;
-            }
-        }
-        
-        List <ModeloBean> mList = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
-        
-        modelo = 0 + (int)(Math.random() * mList.size());
-        /*mb = new MaquinaBeanPedro(maxID, mList.get(modelo) , "13/11/2018", "13/12/2018", );*/
-            
-        LOGGER.info("Gestión: Se ha creado un nuevo MaquinaPedroBean para un "
-                + "nuevo registro de máquina");
-        
-        return mb;
+        LOGGER.info("Gestión: Se ha creado una máquina");
         
     }
 
@@ -257,12 +241,7 @@ public class GM01TextGen implements GM01TextGenInterface{
     @Override
     public void modificarMaquina(MaquinaBeanPedro mb) {
         
-        /*for (int i = 0; i <= maquinas.size(); i++) {
-            if (maquinas.get(i).getID() == mb.getID()) {
-                maquinas.get(i).setMaquina(mb.getMaquina());
-                break;
-            }
-        }*/
+        maquinaClient.edit_XML(mb, String.valueOf(mb.getID()));
         
         LOGGER.info("Gestión: Se ha modificado una máquina");
         
