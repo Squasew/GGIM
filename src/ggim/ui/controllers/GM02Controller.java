@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -151,7 +152,7 @@ public class GM02Controller {
         
         txtID.setText(String.valueOf(mb.getID()));
         
-        if (this.accion.equals("Añadir")) {
+        if (this.accion.equals("Modificar")) {
             txtRevision.setText(mb.getRevision());
             txtPrevision.setText(mb.getPrevision());
             txtEstado.setText(mb.getEstado().toString());
@@ -169,7 +170,7 @@ public class GM02Controller {
                 (ArrayList <ModeloBean>) gm01.getAllModelos2();
         
         ObservableList modelosList =
-                FXCollections.observableArrayList(gm01.getAllModelos());
+                FXCollections.observableArrayList(modelos);
         
         comboModelo.setItems(modelosList);
         comboModelo.getSelectionModel().selectFirst();
@@ -292,9 +293,10 @@ public class GM02Controller {
                 mb2.setEstado(EstadoMaquina.Reparada);
             }
             
-            mb2.setPrevision(datePrevision.getEditor().getText());
-            mb2.setRevision(dateRevision.getEditor().getText());
+            mb2.setPrevision(datePrevision.getValue().toString());
+            mb2.setRevision(dateRevision.getValue().toString());
             mb2.setMaquina((ModeloBean) comboModelo.getSelectionModel().getSelectedItem());
+            
             
             if (accion.equals("Modificar")) {
 

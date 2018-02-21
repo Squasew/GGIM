@@ -113,7 +113,7 @@ public class MaquinaBeanPedro implements Serializable{
      */
     @XmlElement(name="fechaUltimaRevision")
     public String getRevision () {
-        return this.revision.get();
+        return this.revision.get().substring(0,10);
     }
     
     /**
@@ -122,7 +122,7 @@ public class MaquinaBeanPedro implements Serializable{
      * @param prevision es la fecha que se establecerá
      */
     public void setPrevision (String prevision) {
-        this.revision.set(prevision);
+        this.prevision.set(prevision);
     }
     
     /**
@@ -132,7 +132,7 @@ public class MaquinaBeanPedro implements Serializable{
      */
     @XmlElement(name="fechaProximaRevision")
     public String getPrevision () {
-        return this.prevision.get();
+        return this.prevision.get().substring(0,10);
     }
     
     /**

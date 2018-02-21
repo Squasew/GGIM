@@ -94,16 +94,10 @@ public class GM01TextGen implements GM01TextGenInterface{
         
         LOGGER.info("Gestión: Se van a cargar todos los modelos");
         
-        ArrayList <String> modelos = new ArrayList <> ();
-        
         List <ModeloBean> list = modeloClient.findAll_XML(new GenericType<List<ModeloBean>> () {});
-        for (ModeloBean l : list) {
-            modelos.add(l.getModelo());
-        }
-        
         LOGGER.info("Gestión: Se han cargado todos los modelos");
         
-        return modelos;
+        return list;
         
     }
     
